@@ -1,0 +1,127 @@
+'use client';
+
+import { useState } from 'react';
+import QuestionMarkIcon from '@/components/Question';
+const faqs = [
+  {
+    question: 'What is PetGo and how does it work?',
+    answer:
+      'PetGo is a platform that connects pet owners with trusted service providers. It works by allowing you to browse, book, and manage services for your beloved companions.',
+  },
+  {
+    question: 'Is PetGo available in my area?',
+    answer:
+      'We are rapidly expanding! Please check our app or website by entering your zip code to see if we currently serve your specific location.',
+  },
+  {
+    question: 'How can PetGo help with stray animal welfare?',
+    answer:
+      'PetGo partners with local shelters and rescue organizations, donating a portion of our proceeds and facilitating adoptions through our platform.',
+  },
+  {
+    question: 'How can I join the PetGo community?',
+    answer:
+      'You can join by signing up on our website or mobile app. Create a profile for yourself and your pets to start connecting with other pet lovers and professionals!',
+  },
+];
+
+export default function Faq() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const toggleFaq = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  return (
+    <section className="bg-black py-24 relative overflow-hidden">
+      {/* ── Background Question Marks ── */}
+
+      {/* Top Left Red ? */}
+      <QuestionMarkIcon
+        className="absolute left-[15%] top-[15%] select-none pointer-events-none"
+        size={96}
+        color="#BE1E2D"
+        opacity={0.3}
+        // dotGap={0.8}
+        rotation={30}
+      />
+
+      {/* Bottom Right Red ? */}
+      <QuestionMarkIcon
+        className="absolute right-[16%] bottom-[13%] select-none pointer-events-none"
+        size={96}
+        color="#BE1E2D"
+        opacity={0.3}
+        // dotGap={0.8}
+        rotation={30}
+      />
+
+      {/* Bottom Left Yellow ? */}
+      <QuestionMarkIcon
+        className="absolute left-[20%] bottom-[25%] select-none pointer-events-none"
+        size={48}
+        color="#F7941D"
+        opacity={0.3}
+        // dotGap={4}
+        rotation={-30}
+      />
+
+      {/* Top Right Yellow ? */}
+      <QuestionMarkIcon
+        className="absolute right-[35%] top-[11%] select-none pointer-events-none"
+        size={48}
+        color="#F7941D"
+        opacity={0.3}
+        // dotGap={0.8}
+        rotation={-30}
+      />
+
+      <div className="max-w-[800px] mx-auto px-6 relative z-10">
+        <h2 className="text-[#FFF0DE] text-[32px] md:text-[40px] font-bold text-center mb-12 uppercase tracking-wide">
+          FAQ
+        </h2>
+
+        <div className="flex flex-col gap-4">
+          {faqs.map((faq, index) => (
+            <div
+              key={index}
+              className="bg-[#111111] border border-white/10 rounded-lg overflow-hidden transition-all duration-300"
+            >
+              <button
+                onClick={() => toggleFaq(index)}
+                className="w-full flex items-center gap-5 px-6 py-5 md:px-8 md:py-6 text-left focus:outline-none"
+              >
+                <div className="shrink-0 text-[#F7941D] flex items-center justify-center w-6 h-6">
+                  {openIndex === index ? (
+                    <span className="text-[32px] leading-none block font-light mt-[-2px]">
+                      −
+                    </span>
+                  ) : (
+                    <span className="text-[28px] leading-none block font-light">
+                      +
+                    </span>
+                  )}
+                </div>
+                <span className="text-white/90 text-[17px] md:text-[19px] font-medium flex-1">
+                  {faq.question}
+                </span>
+              </button>
+
+              <div
+                className={`transition-all duration-300 ease-in-out px-6 md:px-8 overflow-hidden ${
+                  openIndex === index
+                    ? 'max-h-[500px] opacity-100 pb-6'
+                    : 'max-h-0 opacity-0 pb-0'
+                }`}
+              >
+                <p className="text-white/60 text-[15px] md:text-[16px] leading-relaxed pl-11">
+                  {faq.answer}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -9,6 +9,9 @@ import pedigreePuppy from '@/assets/images/pedigree-puppy.png';
 import dogMedicine from '@/assets/images/dog-medicine.png';
 import catTreats from '@/assets/images/cat-treats.png';
 import petVitamins from '@/assets/images/pet-vitamins.png';
+import foodIcon from '@/assets/images/foodicon.png';
+import medicineIcon from '@/assets/images/medicineicon.png';
+import toyIcon from '@/assets/images/toyicon.png';
 
 import {
   Carousel,
@@ -80,36 +83,27 @@ const categories: { key: Category; label: string; icon: React.ReactNode }[] = [
   {
     key: 'foods',
     label: 'FOODS',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z" fill="currentColor"/>
-      </svg>
-    ),
+    icon: <Image src={foodIcon} alt="Foods" width={22} height={22} className="object-contain" />,
   },
   {
     key: 'medicine',
     label: 'MEDICINE',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 3h12v2H6V3zm6 4c-3.31 0-6 2.69-6 6v8h12v-8c0-3.31-2.69-6-6-6zm0 2c2.21 0 4 1.79 4 4v1h-3v-2h-2v2H8v-1c0-2.21 1.79-4 4-4zm-4 7h8v4H8v-4z" fill="currentColor"/>
-      </svg>
-    ),
+    icon: <Image src={medicineIcon} alt="Medicine" width={22} height={22} className="object-contain" />,
   },
   {
     key: 'toys',
     label: 'TOYS',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6-1.8C18 6.57 15.35 4 12 4s-6 2.57-6 6.2c0 2.34 1.95 5.44 6 9.14 4.05-3.7 6-6.8 6-9.14zM12 2c4.2 0 8 3.22 8 8.2 0 3.32-2.67 7.25-8 11.8-5.33-4.55-8-8.48-8-11.8C4 5.22 7.8 2 12 2z" fill="currentColor"/>
-      </svg>
-    ),
+    icon: <Image src={toyIcon} alt="Toys" width={22} height={22} className="object-contain" />,
   },
   {
     key: 'all',
     label: 'ALL',
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 3h8v8H3V3zm0 10h8v8H3v-8zm10-10h8v8h-8V3zm0 10h8v8h-8v-8z" fill="currentColor"/>
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M18.3823 2H15.2058C14.0363 2 13.0882 2.9481 13.0882 4.11765V7.29413C13.0882 8.46367 14.0363 9.41176 15.2058 9.41176H18.3823C19.5519 9.41176 20.5 8.46367 20.5 7.29413V4.11765C20.5 2.9481 19.5519 2 18.3823 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M7.79412 2H4.61765C3.4481 2 2.5 2.9481 2.5 4.11765V7.29413C2.5 8.46367 3.4481 9.41176 4.61765 9.41176H7.79412C8.96366 9.41176 9.91177 8.46367 9.91177 7.29413V4.11765C9.91177 2.9481 8.96366 2 7.79412 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M18.3823 12.5884H15.2058C14.0363 12.5884 13.0882 13.5364 13.0882 14.706V17.8825C13.0882 19.0521 14.0363 20.0001 15.2058 20.0001H18.3823C19.5519 20.0001 20.5 19.0521 20.5 17.8825V14.706C20.5 13.5364 19.5519 12.5884 18.3823 12.5884Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M7.79412 12.5884H4.61765C3.4481 12.5884 2.5 13.5364 2.5 14.706V17.8825C2.5 19.0521 3.4481 20.0001 4.61765 20.0001H7.79412C8.96366 20.0001 9.91177 19.0521 9.91177 17.8825V14.706C9.91177 13.5364 8.96366 12.5884 7.79412 12.5884Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
     ),
   },
@@ -118,34 +112,27 @@ const categories: { key: Category; label: string; icon: React.ReactNode }[] = [
 /* ─── Product Card ─── */
 function ProductCard({ product }: { product: Product }) {
   return (
-    <div className="group flex flex-col gap-4">
+    <div className="group flex flex-col gap-4 mt-16 mx-auto w-full max-w-[372px]">
       {/* Card container */}
-      <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-b from-[#1a1a1a] to-[#111111] border border-white/5">
-        {/* Subtle glow on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F7941D]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-        {/* Tilted dark panels behind the product (decorative) */}
-        <div className="absolute inset-4 rounded-xl bg-[#222222] transform -rotate-3 origin-bottom-left" />
-        <div className="absolute inset-4 rounded-xl bg-[#1e1e1e] transform rotate-2 origin-bottom-right" />
-
-        {/* Product image */}
-        <div className="relative z-10 flex items-center justify-center w-full h-full p-6">
+      <div className="relative w-full aspect-[372/424] rounded-[32px] bg-[#151515] border border-white/5 transition-colors duration-300">
+        {/* Product image floating out of container */}
+        <div className="absolute -top-[15%] left-0 right-0 bottom-6 flex justify-center items-end pointer-events-none">
           <Image
             src={product.image}
             alt={product.name}
-            width={280}
-            height={380}
-            className="object-contain w-full h-full drop-shadow-2xl group-hover:scale-105 transition-transform duration-500"
+            width={300}
+            height={400}
+            className="object-contain w-[85%] h-full drop-shadow-2xl transition-all duration-500"
           />
         </div>
       </div>
 
       {/* Product info */}
-      <div className="flex flex-col gap-1 px-1">
-        <h3 className="text-white text-[15px] md:text-[17px] font-bold uppercase tracking-wide leading-tight">
+      <div className="flex flex-col gap-1 px-2 mt-2">
+        <h3 className="text-white text-[20px] md:text-[28px] font-bold uppercase tracking-wide leading-tight">
           {product.name}
         </h3>
-        <span className="text-[#F7941D] text-[18px] md:text-[20px] font-bold">
+        <span className="text-[#A89E8C] text-[18px] md:text-[27px] font-normal tracking-wide">
           ${product.price}
         </span>
       </div>
@@ -167,13 +154,13 @@ export default function TopCategories() {
       <div className="container mx-auto px-6 md:px-16">
         {/* ── Heading ── */}
         <div className="text-center mb-4">
-          <h2 className="text-white text-[36px] sm:text-[48px] md:text-[64px] font-bold leading-[1.1] uppercase tracking-tight">
+          <h2 className="text-white text-[36px] sm:text-[48px] md:text-[74px] font-bold leading-[1.1] uppercase tracking-tight">
             Top Services &amp; Categories
           </h2>
         </div>
 
         {/* ── Subtitle ── */}
-        <p className="text-white/50 text-[14px] md:text-[16px] text-center max-w-xl mx-auto mb-10 leading-relaxed">
+        <p className="text-white/70 text-[14px] md:text-[17px] text-center max-w-2xl mx-auto mb-10 leading-relaxed">
           From GPS tracking and vet care to wellness tools, products, and community support,
           PetGo brings everything your pet needs under one roof.
         </p>
@@ -185,16 +172,16 @@ export default function TopCategories() {
               key={cat.key}
               onClick={() => setActiveCategory(cat.key)}
               className={`
-                flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] md:text-[14px] font-semibold uppercase tracking-wider
+                flex justify-center items-center gap-[10px] py-[14px] px-[25px] rounded-[18px] text-[13px] md:text-[14px] font-semibold uppercase tracking-wider
                 border transition-all duration-300 cursor-pointer select-none
                 ${
                   activeCategory === cat.key
-                    ? 'bg-white text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.15)]'
-                    : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10 hover:text-white hover:border-white/20'
+                    ? 'bg-[#FFF0DE] text-[#212A2C] border-[#FFF0DE] shadow-[0_0_20px_rgba(255,240,222,0.15)]'
+                    : 'bg-[#212A2C] text-white/70 border-[rgba(33,42,44,0.15)] hover:text-white hover:bg-[#2a3437]'
                 }
               `}
             >
-              <span className={activeCategory === cat.key ? 'text-black' : 'text-white/60'}>
+              <span className="flex items-center justify-center">
                 {cat.icon}
               </span>
               {cat.label}

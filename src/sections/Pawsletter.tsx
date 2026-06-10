@@ -121,12 +121,12 @@ export default function Pawsletter() {
             />
 
             {/* Orange Paw floating left */}
-            <div className="absolute -left-12 top-1/2 -translate-y-1/2 z-10 hidden sm:block">
+            <div className="absolute -left-12 top-48 -translate-y-1/2 z-10 hidden sm:block">
               <OrangePaw />
             </div>
 
             {/* Red Paw floating bottom right */}
-            <div className="absolute -right-6 -bottom-6 z-10 hidden sm:block">
+            <div className="absolute -right-8 bottom-19 z-10 hidden sm:block">
               <RedPaw />
             </div>
           </div>

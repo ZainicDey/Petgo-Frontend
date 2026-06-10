@@ -124,7 +124,7 @@ export default function Campaign() {
         </div>
 
         {/* Gallery Wrapper */}
-        <div className="flex-1 relative min-w-0 group">
+        <div className="flex-1 relative min-w-0 group flex flex-col justify-center items-center">
           {campaigns[selectedIndex].images.length > 1 && (
             <>
               {/* Left Arrow Button */}
@@ -174,7 +174,7 @@ export default function Campaign() {
           {/* Gallery Scroll Container */}
           <div
             ref={scrollContainerRef}
-            className={`flex gap-2.5 overflow-x-auto scrollbar-hide pb-4 md:pb-0 min-w-0 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`flex gap-2.5 overflow-x-auto scrollbar-hide pb-4 md:pb-0 min-w-0 max-w-full w-max mx-auto ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
             onMouseDown={handleMouseDown}
             onMouseLeave={handleMouseLeave}
             onMouseUp={handleMouseUp}

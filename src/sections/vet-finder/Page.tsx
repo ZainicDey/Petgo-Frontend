@@ -1,12 +1,17 @@
 'use client';
 
-import React, { useState, useMemo, useCallback } from 'react';
+import React, {
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+  useEffect,
+} from 'react';
 import Image from 'next/image';
 import ClinicList from './ClinicList';
 import FilterModal, { FilterState } from './FilterModal';
 import LoadMore from './LoadMore';
 import { ClinicData } from './ClinicCard';
-import rectangle from '@/assets/images/Vet Rectangle.png';
 import Button from '@/components/Buttton';
 /* ── Mock Data ─────────────────────────────────────────────── */
 const CLINIC_IMAGES = [
@@ -138,7 +143,7 @@ const MOCK_CLINICS: ClinicData[] = [
 
 /* ── Area Options ─────────────────────────────────────────── */
 const AREAS = [
-  'All Areas',
+  'Select Area',
   'Dhanmondi',
   'Gulshan',
   'Banani',
@@ -153,19 +158,34 @@ const ITEMS_PER_PAGE = 9;
 
 export default function VetFinderPage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedArea, setSelectedArea] = useState('All Areas');
+  const [selectedArea, setSelectedArea] = useState('Select Area');
   const [filterOpen, setFilterOpen] = useState(false);
   const [filters, setFilters] = useState<FilterState>({
+    sortBy: null,
     services: [],
-    minRating: 0,
-    statusOpen: null,
+    species: [],
   });
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [areaDropdownOpen, setAreaDropdownOpen] = useState(false);
+  const areaDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        areaDropdownRef.current &&
+        !areaDropdownRef.current.contains(event.target as Node)
+      ) {
+        setAreaDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   /* ── Filtering Logic ─────────────────────────────────────── */
   const filteredClinics = useMemo(() => {
-    return MOCK_CLINICS.filter((clinic) => {
+    let result = MOCK_CLINICS.filter((clinic) => {
       // Search query
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
@@ -177,7 +197,7 @@ export default function VetFinderPage() {
       }
 
       // Area filter
-      if (selectedArea !== 'All Areas' && clinic.area !== selectedArea) {
+      if (selectedArea !== 'Select Area' && clinic.area !== selectedArea) {
         return false;
       }
 
@@ -189,19 +209,26 @@ export default function VetFinderPage() {
         if (!hasService) return false;
       }
 
-      // Rating filter
-      if (filters.minRating > 0 && clinic.average_rating < filters.minRating) {
-        return false;
-      }
-
-      // Status filter
-      if (filters.statusOpen !== null) {
-        const isOpen = clinic.status === 'Open';
-        if (isOpen !== filters.statusOpen) return false;
+      // Species filter (Mock: checking tags for now as there's no explicit species data)
+      if (filters.species.length > 0) {
+        // If a clinic has no specific species tags, we might exclude it or include it.
+        // For mock purposes, let's say it matches if tags contain the species, or if we just want to show something,
+        // we'll do a simple includes check.
+        const hasSpecies = filters.species.some((s) =>
+          clinic.tags.some((t) => t.toLowerCase().includes(s.toLowerCase()))
+        );
+        if (!hasSpecies) return false;
       }
 
       return true;
     });
+
+    if (filters.sortBy === 'Rating') {
+      result = [...result].sort((a, b) => b.average_rating - a.average_rating);
+    }
+    // We can add sorting for Distance and Most Reviewed when data supports it
+
+    return result;
   }, [searchQuery, selectedArea, filters]);
 
   const visibleClinics = filteredClinics.slice(0, visibleCount);
@@ -223,8 +250,14 @@ export default function VetFinderPage() {
   return (
     <section className="relative min-h-screen overflow-hidden">
       {/* ── Background Rectangle ── */}
-      <div className="absolute -top-10 inset-x-0 z-0 flex justify-center pointer-events-none mt-9">
-        <Image src={rectangle} alt="" className="h-full w-full" />
+      <div className="absolute -top-5 inset-x-0 z-0 flex justify-center pointer-events-none mt-9">
+        <div
+          className="w-full h-[750px]"
+          style={{
+            background:
+              'linear-gradient(180deg, rgba(136, 136, 136, 0.00) 0%, rgba(104, 104, 104, 0.25) 50%, rgba(136, 136, 136, 0.00) 100%)',
+          }}
+        />
       </div>
 
       {/* ── Hero Header ── */}
@@ -241,7 +274,7 @@ export default function VetFinderPage() {
       </div>
 
       {/* ── Search Bar ── */}
-      <div className="container mx-auto px-4 md:px-8 lg:px-16 mb-12">
+      <div className="container mx-auto px-4 md:px-8 lg:px-16 mb-12 relative z-30">
         <div className="flex flex-col mt-14 sm:flex-row items-stretch sm:items-center gap-4 max-w-2xl mx-auto sm:translate-x-10">
           {/* Main Search Input & Area Select Container */}
           <div className="flex-1 flex flex-col sm:flex-row items-center min-h-[50px] rounded-[18px] bg-[rgba(255,240,222,0.10)] border border-[rgba(255,240,222,0.10)] pl-5 pr-3 py-2 sm:py-0">
@@ -256,35 +289,62 @@ export default function VetFinderPage() {
             />
 
             {/* Area Select */}
-            <div className="relative flex items-center mt-3 sm:mt-0 sm:ml-4 w-full sm:w-auto">
-              <select
-                value={selectedArea}
-                onChange={(e) => {
-                  setSelectedArea(e.target.value);
-                  setVisibleCount(ITEMS_PER_PAGE);
+            <div
+              ref={areaDropdownRef}
+              className="relative flex items-center mt-3 sm:mt-0 sm:ml-4 w-full sm:w-auto"
+            >
+              <button
+                onClick={() => setAreaDropdownOpen(!areaDropdownOpen)}
+                className="h-[36px] w-full sm:w-[130px] px-4 pr-4 rounded-[9px] border border-[rgba(255,240,222,0.10)] bg-[rgba(255,240,222,0.05)] text-white text-left flex items-center justify-between cursor-pointer focus:outline-none transition-colors select-none"
+                style={{
+                  fontFamily: '"Open Sans", sans-serif',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  lineHeight: '20px',
                 }}
-                className="h-[36px] w-full sm:w-auto px-4 pr-10 rounded-[10px] bg-transparent border border-[#555] text-gray-300 text-sm appearance-none cursor-pointer focus:outline-none hover:border-gray-400 transition-colors"
                 id="area-select"
               >
-                {AREAS.map((area) => (
-                  <option key={area} value={area} className="bg-[#1A1A1D]">
-                    {area}
-                  </option>
-                ))}
-              </select>
+                <span>{selectedArea}</span>
+              </button>
               <svg
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
                 fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+                className={`absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-200 ${
+                  areaDropdownOpen ? 'rotate-180' : ''
+                }`}
               >
                 <path
+                  d="M5 7.5L10 12.5L15 7.5"
+                  stroke="#FFF0DE"
+                  strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
                 />
               </svg>
+
+              {areaDropdownOpen && (
+                <div
+                  className="absolute top-full left-0 mt-2 z-50 w-full bg-[#1A1A1D]/90 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150"
+                  style={{ fontFamily: '"Open Sans", sans-serif' }}
+                >
+                  {AREAS.map((area) => (
+                    <button
+                      key={area}
+                      onClick={() => {
+                        setSelectedArea(area);
+                        setVisibleCount(ITEMS_PER_PAGE);
+                        setAreaDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 hover:bg-white/10 text-white text-[14px] font-normal leading-[20px] transition-colors"
+                    >
+                      {area}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -333,6 +393,7 @@ export default function VetFinderPage() {
       <FilterModal
         isOpen={filterOpen}
         onClose={() => setFilterOpen(false)}
+        currentFilters={filters}
         onFilter={(f) => {
           setFilters(f);
           setVisibleCount(ITEMS_PER_PAGE);

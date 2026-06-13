@@ -44,9 +44,12 @@ export default function ClinicList({ clinics, totalCount }: ClinicListProps) {
   return (
     <div>
       {/* Results Header */}
-      <div className="flex items-center justify-between mb-6">
-        <p className="text-gray-300 text-sm">
-          Search Results: <span className="text-white font-semibold">{totalCount} Clinics Found</span>
+      <div className="flex items-center justify-between my-14">
+        <p className="text-white/50 font-[family-name:var(--font-opensans)] text-[16px] font-normal leading-[22px]">
+          Search Results:{' '}
+          <span className="text-white font-[Gabarito] text-[18px] font-medium leading-[22px] ml-1">
+            {totalCount} Clinics Found
+          </span>
         </p>
       </div>
 

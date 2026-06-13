@@ -33,28 +33,44 @@ export default function ClinicCard({ clinic }: ClinicCardProps) {
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
-        {/* Rating Badge */}
-        <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-sm rounded-full px-2.5 py-1">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="#F7941D" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-          </svg>
-          <span className="text-[#F7941D] text-sm font-semibold">{clinic.average_rating}</span>
-        </div>
       </div>
 
       {/* Content Section */}
       <div className="flex flex-col flex-1 p-4 gap-3">
-        {/* Clinic Name */}
-        <h3 className="text-white text-[16px] font-semibold leading-tight line-clamp-1">
-          {clinic.name}
-        </h3>
+        {/* Clinic Name & Rating */}
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="text-white font-[Gabarito] text-[24px] font-medium leading-normal line-clamp-1">
+            {clinic.name}
+          </h3>
+          <div className="flex items-center gap-1 shrink-0 translate-y-[10px]">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                d="M7.68323 1.53003C7.71245 1.471 7.75758 1.42132 7.81353 1.38658C7.86949 1.35184 7.93404 1.33344 7.9999 1.33344C8.06576 1.33344 8.13031 1.35184 8.18626 1.38658C8.24222 1.42132 8.28735 1.471 8.31656 1.53003L9.85656 4.64936C9.95802 4.85468 10.1078 5.0323 10.293 5.167C10.4782 5.3017 10.6933 5.38944 10.9199 5.4227L14.3639 5.9267C14.4292 5.93615 14.4905 5.96368 14.5409 6.00616C14.5913 6.04865 14.6288 6.1044 14.6492 6.1671C14.6696 6.22981 14.6721 6.29697 14.6563 6.36099C14.6405 6.42501 14.6071 6.48333 14.5599 6.52936L12.0692 8.9547C11.905 9.11477 11.7821 9.31235 11.7111 9.53045C11.6402 9.74855 11.6233 9.98062 11.6619 10.2067L12.2499 13.6334C12.2614 13.6986 12.2544 13.7657 12.2296 13.8272C12.2048 13.8886 12.1632 13.9418 12.1096 13.9807C12.056 14.0196 11.9925 14.0427 11.9265 14.0473C11.8604 14.0519 11.7944 14.0378 11.7359 14.0067L8.65723 12.388C8.45438 12.2815 8.22868 12.2259 7.99956 12.2259C7.77044 12.2259 7.54475 12.2815 7.3419 12.388L4.2639 14.0067C4.20545 14.0376 4.1395 14.0516 4.07353 14.0469C4.00757 14.0422 3.94424 14.0191 3.89076 13.9802C3.83728 13.9413 3.79579 13.8882 3.771 13.8268C3.74622 13.7655 3.73914 13.6985 3.75056 13.6334L4.3379 10.2074C4.37669 9.98119 4.35989 9.74896 4.28892 9.53073C4.21796 9.31249 4.09497 9.1148 3.93056 8.9547L1.4399 6.53003C1.39229 6.48405 1.35856 6.42563 1.34254 6.36141C1.32652 6.2972 1.32886 6.22978 1.34928 6.16682C1.36971 6.10387 1.40741 6.04793 1.45808 6.00535C1.50876 5.96278 1.57037 5.9353 1.6359 5.92603L5.07923 5.4227C5.30607 5.3897 5.52149 5.30207 5.70695 5.16736C5.89242 5.03264 6.04237 4.85488 6.1439 4.64936L7.68323 1.53003Z"
+                fill="#F7941D"
+                stroke="#F7941D"
+                strokeWidth="1.33333"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span className="text-white font-[family-name:var(--font-opensans)] text-[16px] font-normal leading-[22px]">
+              {clinic.average_rating}
+            </span>
+          </div>
+        </div>
 
         {/* Tags (Services) */}
         <div className="flex flex-wrap gap-1.5">
           {clinic.services.slice(0, 3).map((service) => (
             <span
               key={service}
-              className="text-[11px] text-gray-300 bg-[#2a2a2d] rounded-full px-2.5 py-0.5 border border-[#3a3a3d]"
+              className="text-[#FFF0DE] font-[family-name:var(--font-opensans)] text-[12px] font-normal leading-[17px] bg-[#2a2a2d] rounded-full px-2.5 py-0.5 border border-[#3a3a3d]"
             >
               {service}
             </span>
@@ -62,16 +78,28 @@ export default function ClinicCard({ clinic }: ClinicCardProps) {
         </div>
 
         {/* Address */}
-        <div className="flex items-start gap-2 text-gray-400 text-[13px]">
+        <div className="flex items-start gap-2 text-[#D1D5DC] font-[family-name:var(--font-opensans)] text-[16px] font-normal leading-[22px]">
           <svg
-            className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#F7941D]"
-            fill="currentColor"
+            className="shrink-0 mt-0.5"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
             viewBox="0 0 20 20"
+            fill="none"
           >
             <path
-              fillRule="evenodd"
-              d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-              clipRule="evenodd"
+              d="M16.6667 8.33335C16.6667 12.4942 12.0509 16.8275 10.5009 18.1659C10.3565 18.2744 10.1807 18.3331 10 18.3331C9.81938 18.3331 9.6436 18.2744 9.49921 18.1659C7.94921 16.8275 3.33337 12.4942 3.33337 8.33335C3.33337 6.56524 4.03575 4.86955 5.286 3.61931C6.53624 2.36907 8.23193 1.66669 10 1.66669C11.7682 1.66669 13.4638 2.36907 14.7141 3.61931C15.9643 4.86955 16.6667 6.56524 16.6667 8.33335Z"
+              stroke="#F7941D"
+              strokeWidth="1.33333"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M10 10.8333C11.3807 10.8333 12.5 9.71402 12.5 8.33331C12.5 6.9526 11.3807 5.83331 10 5.83331C8.61929 5.83331 7.5 6.9526 7.5 8.33331C7.5 9.71402 8.61929 10.8333 10 10.8333Z"
+              stroke="#F7941D"
+              strokeWidth="1.33333"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
           <span className="line-clamp-1">
@@ -80,23 +108,35 @@ export default function ClinicCard({ clinic }: ClinicCardProps) {
         </div>
 
         {/* Opening Hours */}
-        <div className="flex items-center gap-2 text-gray-400 text-[13px]">
+        <div className="flex items-center gap-2 text-[#D1D5DC] font-[family-name:var(--font-opensans)] text-[16px] font-normal leading-[22px]">
           <svg
-            className="w-3.5 h-3.5 shrink-0 text-[#F7941D]"
-            fill="currentColor"
+            className="shrink-0"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
             viewBox="0 0 20 20"
+            fill="none"
           >
             <path
-              fillRule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-              clipRule="evenodd"
+              d="M10 5V10L13.3333 11.6667"
+              stroke="#F7941D"
+              strokeWidth="1.33333"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M9.99996 18.3334C14.6023 18.3334 18.3333 14.6024 18.3333 10C18.3333 5.39765 14.6023 1.66669 9.99996 1.66669C5.39759 1.66669 1.66663 5.39765 1.66663 10C1.66663 14.6024 5.39759 18.3334 9.99996 18.3334Z"
+              stroke="#F7941D"
+              strokeWidth="1.33333"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
           <span>Open until 6:00 PM</span>
           <span
-            className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${
+            className={`px-2 py-0.5 rounded-full font-[family-name:var(--font-opensans)] text-[12px] font-normal leading-[17px] ${
               clinic.status === 'Open'
-                ? 'text-emerald-400 bg-emerald-400/10 border border-emerald-400/30'
+                ? 'text-[#05DF72] bg-[#05DF72]/10 border border-[#05DF72]/30'
                 : 'text-red-400 bg-red-400/10 border border-red-400/30'
             }`}
           >
@@ -106,15 +146,19 @@ export default function ClinicCard({ clinic }: ClinicCardProps) {
 
         {/* Book Appointment Button */}
         <button
-          className="mt-auto w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-white text-[14px] font-medium btn-gradient transition-all duration-300 hover:brightness-110 hover:shadow-[0_4px_15px_rgba(247,148,29,0.3)] active:scale-[0.98] cursor-pointer"
+          className="mt-auto w-full flex items-center justify-center gap-2 px-6 py-3 rounded-[18px] bg-[#F7941D] text-[#1D1D1F] font-[family-name:var(--font-opensans)] text-[14px] font-semibold leading-[20px] transition-colors duration-300 hover:bg-[#d87c12] active:scale-[0.98] cursor-pointer"
           id={`book-appointment-${clinic.id}`}
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+          >
             <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              d="M6.66663 2.16669H13.3336C13.8639 2.16677 14.3727 2.37763 14.7477 2.75262C15.1227 3.12768 15.3336 3.63633 15.3336 4.16669V17.5016C15.3339 17.5604 15.318 17.6187 15.2887 17.6696C15.2597 17.72 15.2178 17.7614 15.1676 17.7907C15.1174 17.8187 15.0611 17.8341 15.0035 17.8337H14.9967C14.9385 17.8341 14.8814 17.8183 14.8307 17.7897L10.2506 15.1423L9.99963 14.9977L9.74963 15.1423L5.16663 17.7917C5.11595 17.8209 5.05815 17.8366 4.99963 17.8366C4.94128 17.8366 4.88417 17.8209 4.83362 17.7917C4.78275 17.7623 4.73984 17.7205 4.71057 17.6696C4.68131 17.6187 4.66639 17.5604 4.66663 17.5016V4.16669C4.66663 3.63626 4.87749 3.1277 5.25256 2.75262C5.62763 2.37755 6.1362 2.16669 6.66663 2.16669ZM6.66663 2.83368C6.31301 2.83368 5.97429 2.97426 5.72424 3.2243C5.4742 3.47435 5.33362 3.81307 5.33362 4.16669V16.9245L6.08362 16.4909L9.83362 14.3249C9.88416 14.2957 9.9413 14.28 9.99963 14.28C10.029 14.28 10.0584 14.2841 10.0865 14.2917L10.1666 14.3249L13.9166 16.4909L14.6666 16.9245V4.16669C14.6666 3.81314 14.5259 3.47434 14.276 3.2243C14.026 2.97433 13.6871 2.83376 13.3336 2.83368H6.66663Z"
+              stroke="#1D1D1F"
             />
           </svg>
           Book an Appointment

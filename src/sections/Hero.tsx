@@ -4,7 +4,6 @@ import React from "react";
 import Image from "next/image";
 import Button from "@/components/Buttton";
 import HeroMockup from "@/assets/images/Hero App-Mockup.png";
-import HeroRectangle from "@/assets/images/Hero Rectangle.png";
 import Paw from "@/assets/images/Paw.png";
 import PetgoAnimation from "@/components/PetgoAnimation";
 
@@ -43,7 +42,13 @@ export default function Hero() {
 
       {/* ── Background Rectangle ── */}
       <div className="absolute bottom-[150px] inset-x-0 z-0 flex justify-center">
-        <Image src={HeroRectangle} alt="" className="h-100 w-700" />
+        <div
+          className="w-full h-[490px]"
+          style={{
+            background:
+              'linear-gradient(180deg, rgba(136, 136, 136, 0.00) 0%, rgba(104, 104, 104, 0.25) 50%, rgba(136, 136, 136, 0.00) 100%)',
+          }}
+        />
       </div>
 
       {/* ── Decorative Paw Prints ── */}

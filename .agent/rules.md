@@ -1,0 +1,3 @@
+- DO NOT run `npm run dev` or `next dev`.
+- DO NOT use the browser subagent or open `localhost`.
+- Only use `npm run build` or `tsc` to verify code correctness.

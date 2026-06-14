@@ -1,16 +1,18 @@
 import { StaticImageData } from "next/image";
 import search from "@/assets/images/Search.svg";
+import Link from "next/link";
 
 type CardProps = {
   image: StaticImageData;
   variant?: "search" | "zoom";
   title: string;
   description: string;
+  href?: string;
 };
 
-export default function Card({ image, variant = "search", title, description }: CardProps) {
-  return (
-    <div className="group relative inline-flex flex-col overflow-hidden rounded-2xl bg-[#1e1e1e] cursor-pointer">
+export default function Card({ image, variant = "search", title, description, href }: CardProps) {
+  const innerContent = (
+    <>
       {/* Top Image Section */}
       <div className="relative overflow-hidden w-[310px] h-[310px]">
         {/* Base Map Image — native <img> so SVGs stay crisp on zoom */}
@@ -43,6 +45,22 @@ export default function Card({ image, variant = "search", title, description }: 
           {description}
         </p>
       </div>
+    </>
+  );
+
+  const className = "group relative inline-flex flex-col overflow-hidden rounded-2xl bg-[#1e1e1e] cursor-pointer";
+
+  if (href) {
+    return (
+      <Link href={href} className={className}>
+        {innerContent}
+      </Link>
+    );
+  }
+
+  return (
+    <div className={className}>
+      {innerContent}
     </div>
   );
 }

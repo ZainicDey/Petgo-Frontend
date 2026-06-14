@@ -21,18 +21,21 @@ const cards = [
     variant: 'search' as const,
     title: 'Vet Finder',
     description: 'Find your vet right from your fingertips.',
+    href: '/vet-finder',
   },
   {
     image: fosterFinder,
     variant: 'search' as const,
     title: 'Foster House Finder',
     description: 'Give pets a loving temporary home.',
+    href: '/foster-house',
   },
   {
     image: Training,
     variant: 'zoom' as const,
     title: 'Training & Grooming',
     description: 'Pamper and train your pets effortlessly.',
+    href: '/training-grooming',
   },
   {
     image: petAdopt,

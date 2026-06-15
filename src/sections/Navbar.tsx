@@ -19,8 +19,8 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="relative z-50 w-full pt-1 container mx-auto">
-      <div className="flex w-full items-center justify-between pt-6 pb-1">
+    <nav className="relative z-50 w-full">
+      <div className="container mx-auto flex w-full items-center justify-between px-5 py-7">
         {/* ── Logo ── */}
         <Link href="/" className="shrink-0">
           <Image

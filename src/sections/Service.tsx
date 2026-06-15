@@ -42,6 +42,7 @@ const cards = [
     variant: 'zoom' as const,
     title: 'Pet Adoption',
     description: 'Adopt a pet, save a life.',
+    href: '/pet-adoption',
   },
   {
     image: petEcommerce,

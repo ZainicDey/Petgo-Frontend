@@ -10,3 +10,6 @@ export { default as ListingLoadMore } from './ListingLoadMore';
 
 export { default as ListingFinderPage } from './ListingFinderPage';
 export type { ListingFinderPageProps } from './ListingFinderPage';
+
+export { default as BookingModal } from './BookingModal';
+

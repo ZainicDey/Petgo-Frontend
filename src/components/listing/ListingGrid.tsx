@@ -13,6 +13,8 @@ interface ListingGridProps {
   ctaLabel?: string;
   /** CTA icon passed through to each card */
   ctaIcon?: React.ReactNode;
+  /** Callback when a card's CTA is clicked */
+  onCtaClick?: (item: ListingData) => void;
 }
 
 const containerVariants: Variants = {
@@ -43,6 +45,7 @@ export default function ListingGrid({
   resultLabel = 'Clinics Found',
   ctaLabel,
   ctaIcon,
+  onCtaClick,
 }: ListingGridProps) {
   if (items.length === 0) {
     return (
@@ -73,7 +76,12 @@ export default function ListingGrid({
       >
         {items.map((item) => (
           <motion.div key={item.id} variants={cardVariants}>
-            <ListingCard item={item} ctaLabel={ctaLabel} ctaIcon={ctaIcon} />
+            <ListingCard
+              item={item}
+              ctaLabel={ctaLabel}
+              ctaIcon={ctaIcon}
+              onCtaClick={onCtaClick}
+            />
           </motion.div>
         ))}
       </motion.div>

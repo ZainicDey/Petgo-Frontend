@@ -14,6 +14,7 @@ import ListingFilterModal, {
 } from './ListingFilterModal';
 import ListingLoadMore from './ListingLoadMore';
 import { ListingData } from './ListingCard';
+import BookingModal from './BookingModal';
 import Button from '@/components/Buttton';
 
 /* ── Props ──────────────────────────────────────────────────── */
@@ -82,6 +83,15 @@ export default function ListingFinderPage({
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [areaDropdownOpen, setAreaDropdownOpen] = useState(false);
   const areaDropdownRef = useRef<HTMLDivElement>(null);
+
+  // States for the Booking Modal
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<ListingData | null>(null);
+
+  const handleCtaClick = useCallback((item: ListingData) => {
+    setSelectedItem(item);
+    setBookingOpen(true);
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -169,20 +179,20 @@ export default function ListingFinderPage({
       </div>
 
       {/* ── Hero Header ── */}
-      <div className="relative text-center pt-30 pb-8 px-4">
+      <div className="relative text-center pt-20 pb-8 px-4">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(247,148,29,0.06)_0%,transparent_70%)] pointer-events-none" />
 
         <h1 className="relative text-4xl md:text-5xl lg:text-[58px] font-bold text-[#F7941D] mb-3">
           {title}
         </h1>
-        <p className="relative text-white text-sm md:text-base max-w-md mx-auto">
+        <p className="relative text-white font-sans text-sm md:text-base max-w-md mx-auto">
           {subtitle}
         </p>
       </div>
 
       {/* ── Search Bar ── */}
       <div className="container mx-auto px-4 md:px-8 lg:px-16 mb-12 relative z-30">
-        <div className="flex flex-col mt-14 sm:flex-row items-stretch sm:items-center gap-4 max-w-2xl mx-auto sm:translate-x-10">
+        <div className="flex flex-col mt-8 sm:flex-row items-stretch sm:items-center gap-4 max-w-2xl mx-auto sm:translate-x-10">
           {/* Main Search Input & Area Select Container */}
           <div className="flex-1 flex flex-col sm:flex-row items-center min-h-[50px] rounded-[18px] bg-[rgba(255,240,222,0.10)] border border-[rgba(255,240,222,0.10)] pl-5 pr-3 py-2 sm:py-0">
             <input
@@ -288,6 +298,7 @@ export default function ListingFinderPage({
           resultLabel={resultLabel}
           ctaLabel={ctaLabel}
           ctaIcon={ctaIcon}
+          onCtaClick={handleCtaClick}
         />
 
         <ListingLoadMore
@@ -309,6 +320,14 @@ export default function ListingFinderPage({
         sortOptions={sortOptions}
         filterSections={filterSections}
       />
+      {/* ── Booking Modal ── */}
+      {selectedItem && (
+        <BookingModal
+          isOpen={bookingOpen}
+          onClose={() => setBookingOpen(false)}
+          item={selectedItem}
+        />
+      )}
     </section>
   );
 }

@@ -40,6 +40,8 @@ export interface ListingFinderPageProps {
   sortOptions?: string[];
   /** Filter sections for the filter modal */
   filterSections?: FilterSection[];
+  /** Callback when a card body is clicked (e.g., navigate to detail page) */
+  onCardClick?: (item: ListingData) => void;
 }
 
 /* ── Default area options ───────────────────────────────────── */
@@ -71,6 +73,7 @@ export default function ListingFinderPage({
   ctaIcon,
   sortOptions,
   filterSections,
+  onCardClick,
 }: ListingFinderPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedArea, setSelectedArea] = useState(areas[0] || 'Select Area');
@@ -299,6 +302,7 @@ export default function ListingFinderPage({
           ctaLabel={ctaLabel}
           ctaIcon={ctaIcon}
           onCtaClick={handleCtaClick}
+          onCardClick={onCardClick}
         />
 
         <ListingLoadMore

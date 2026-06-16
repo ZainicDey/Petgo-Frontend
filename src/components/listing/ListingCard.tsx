@@ -25,6 +25,8 @@ interface ListingCardProps {
   ctaIcon?: React.ReactNode;
   /** Callback when the CTA button is clicked */
   onCtaClick?: (item: ListingData) => void;
+  /** Callback when anywhere on the card is clicked (for navigation) */
+  onCardClick?: (item: ListingData) => void;
 }
 
 /* ── Default CTA icon (bookmark) ── */
@@ -66,9 +68,13 @@ export default function ListingCard({
   ctaLabel = 'Book an Appointment',
   ctaIcon,
   onCtaClick,
+  onCardClick,
 }: ListingCardProps) {
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-[#1A1A1D] border border-[#2a2a2d] transition-all duration-300 hover:border-[#F7941D]/40 hover:shadow-[0_0_30px_rgba(247,148,29,0.08)]">
+    <div
+      className={`group relative flex flex-col overflow-hidden rounded-2xl bg-[#1A1A1D] border border-[#2a2a2d] transition-all duration-300 hover:border-[#F7941D]/40 hover:shadow-[0_0_30px_rgba(247,148,29,0.08)] ${onCardClick ? 'cursor-pointer' : ''}`}
+      onClick={() => onCardClick?.(item)}
+    >
       {/* Image Section */}
       <div className="relative w-full h-[200px] overflow-hidden">
         <Image
@@ -193,7 +199,7 @@ export default function ListingCard({
         <button
           className="mt-auto w-full flex items-center justify-center gap-2 px-6 py-3 rounded-[18px] bg-[#F7941D] text-[#1D1D1F] font-[family-name:var(--font-opensans)] text-[14px] font-semibold leading-[20px] transition-colors duration-300 hover:bg-[#d87c12] active:scale-[0.98] cursor-pointer"
           id={`listing-cta-${item.id}`}
-          onClick={() => onCtaClick?.(item)}
+          onClick={(e) => { e.stopPropagation(); onCtaClick?.(item); }}
         >
           {ctaIcon || <BookmarkIcon />}
           {ctaLabel}

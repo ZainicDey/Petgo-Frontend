@@ -15,6 +15,8 @@ interface ListingGridProps {
   ctaIcon?: React.ReactNode;
   /** Callback when a card's CTA is clicked */
   onCtaClick?: (item: ListingData) => void;
+  /** Callback when the whole card area is clicked (for navigation) */
+  onCardClick?: (item: ListingData) => void;
 }
 
 const containerVariants: Variants = {
@@ -46,6 +48,7 @@ export default function ListingGrid({
   ctaLabel,
   ctaIcon,
   onCtaClick,
+  onCardClick,
 }: ListingGridProps) {
   if (items.length === 0) {
     return (
@@ -81,6 +84,7 @@ export default function ListingGrid({
               ctaLabel={ctaLabel}
               ctaIcon={ctaIcon}
               onCtaClick={onCtaClick}
+              onCardClick={onCardClick}
             />
           </motion.div>
         ))}

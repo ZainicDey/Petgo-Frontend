@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { ListingFinderPage } from '@/components/listing';
 import type { ListingData } from '@/components/listing';
 
@@ -133,6 +134,12 @@ const MOCK_CLINICS: ListingData[] = [
 ];
 
 export default function VetFinderPage() {
+  const router = useRouter();
+
+  const handleCardClick = useCallback((item: ListingData) => {
+    router.push(`/vet-finder/${item.id}`);
+  }, [router]);
+
   return (
     <ListingFinderPage
       title="VET FINDER"
@@ -141,6 +148,7 @@ export default function VetFinderPage() {
       items={MOCK_CLINICS}
       resultLabel="Clinics Found"
       ctaLabel="Book an Appointment"
+      onCardClick={handleCardClick}
     />
   );
 }

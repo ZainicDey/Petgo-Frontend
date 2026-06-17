@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import VetDetailPage from '@/sections/vet-finder-detail/Page';
-import type { VetDetailData } from '@/sections/vet-finder-detail/Page';
+import ListingDetailPage from '@/sections/vet-finder-detail/Page';
+import type { ListingDetailData } from '@/sections/vet-finder-detail/Page';
 
 /* ── Mock data matching the API shape ─────────────────────────
    Replace this with a real fetch once the API is ready.
    ─────────────────────────────────────────────────────────── */
-const MOCK_DETAILS: Record<number, VetDetailData> = {
+const MOCK_DETAILS: Record<number, ListingDetailData> = {
   1: {
     id: 1,
     image: '/vet-hospital-1.png',
@@ -128,7 +128,7 @@ export default async function VetDetailRoute({
 
   return (
     <main>
-      <VetDetailPage data={data} />
+      <ListingDetailPage data={data} />
     </main>
   );
 }

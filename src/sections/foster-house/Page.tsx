@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { ListingFinderPage } from '@/components/listing';
 import type { ListingData, FilterSection } from '@/components/listing';
 
@@ -168,6 +169,8 @@ const PhoneIcon = () => (
 );
 
 export default function FosterHousePage() {
+  const router = useRouter();
+
   return (
     <ListingFinderPage
       title="FOSTER HOUSE FINDER"
@@ -178,6 +181,7 @@ export default function FosterHousePage() {
       ctaLabel="Contact Foster Home"
       ctaIcon={<PhoneIcon />}
       filterSections={FOSTER_FILTER_SECTIONS}
+      onCardClick={(item) => router.push(`/foster-house/${item.id}`)}
     />
   );
 }

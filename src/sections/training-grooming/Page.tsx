@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { ListingFinderPage } from '@/components/listing';
 import type { ListingData, FilterSection } from '@/components/listing';
 import { Scissors } from 'lucide-react';
@@ -102,6 +103,8 @@ const TRAINING_FILTER_SECTIONS: FilterSection[] = [
 ];
 
 export default function TrainingGroomingPage() {
+  const router = useRouter();
+
   return (
     <ListingFinderPage
       title="TRAINING & GROOMING"
@@ -112,6 +115,7 @@ export default function TrainingGroomingPage() {
       ctaLabel="Book Service"
       ctaIcon={<Scissors size={18} />}
       filterSections={TRAINING_FILTER_SECTIONS}
+      onCardClick={(item) => router.push(`/training-grooming/${item.id}`)}
     />
   );
 }

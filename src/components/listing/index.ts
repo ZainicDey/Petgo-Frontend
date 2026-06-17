@@ -1,4 +1,4 @@
-export { default as ListingCard, PhoneIcon } from './ListingCard';
+export { default as ListingCard, PhoneIcon, BookmarkIcon } from './ListingCard';
 export type { ListingData } from './ListingCard';
 
 export { default as ListingGrid } from './ListingGrid';

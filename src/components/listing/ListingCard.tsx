@@ -30,7 +30,7 @@ interface ListingCardProps {
 }
 
 /* ── Default CTA icon (bookmark) ── */
-const BookmarkIcon = () => (
+export const BookmarkIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="20"
@@ -199,7 +199,10 @@ export default function ListingCard({
         <button
           className="mt-auto w-full flex items-center justify-center gap-2 px-6 py-3 rounded-[18px] bg-[#F7941D] text-[#1D1D1F] font-[family-name:var(--font-opensans)] text-[14px] font-semibold leading-[20px] transition-colors duration-300 hover:bg-[#d87c12] active:scale-[0.98] cursor-pointer"
           id={`listing-cta-${item.id}`}
-          onClick={(e) => { e.stopPropagation(); onCtaClick?.(item); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onCtaClick?.(item);
+          }}
         >
           {ctaIcon || <BookmarkIcon />}
           {ctaLabel}

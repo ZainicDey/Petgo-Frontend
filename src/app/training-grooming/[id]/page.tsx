@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import ListingDetailPage from '@/sections/training-grooming-detail/Page';
-import type { ListingDetailData } from '@/sections/training-grooming-detail/Page';
+import Link from 'next/link';
+import { ListingDetailPage, type ListingDetailData } from '@/components/listing';
 
 /* ── Mock data matching the API shape ─────────────────────────
    Replace this with a real fetch once the API is ready.
@@ -119,9 +119,9 @@ export default async function TrainingDetailRoute({
       <main className="min-h-screen flex flex-col items-center justify-center gap-4 text-white">
         <h1 className="text-3xl font-bold text-[#F7941D]">Service Not Found</h1>
         <p className="text-white/60">We couldn&apos;t find this service. Please go back and try again.</p>
-        <a href="/training-grooming" className="mt-4 px-6 py-3 rounded-xl bg-[#F7941D] text-[#1D1D1F] font-semibold hover:bg-[#d87c12] transition-colors">
+        <Link href="/training-grooming" className="mt-4 px-6 py-3 rounded-xl bg-[#F7941D] text-[#1D1D1F] font-semibold hover:bg-[#d87c12] transition-colors">
           Back to Training & Grooming
-        </a>
+        </Link>
       </main>
     );
   }

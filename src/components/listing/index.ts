@@ -13,3 +13,13 @@ export type { ListingFinderPageProps } from './ListingFinderPage';
 
 export { default as BookingModal } from './BookingModal';
 
+export { default as ListingDetailPage } from './ListingDetailPage';
+export type { 
+    ListingDetailPageProps, 
+    ListingDetailData, 
+    VetDetailData, 
+    TeamMember, 
+    Veterinarian, 
+    OpeningHours, 
+    DayHours 
+} from './ListingDetailPage';

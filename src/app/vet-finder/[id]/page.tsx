@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import ListingDetailPage from '@/sections/vet-finder-detail/Page';
-import type { ListingDetailData } from '@/sections/vet-finder-detail/Page';
+import Link from 'next/link';
+import { ListingDetailPage, type ListingDetailData } from '@/components/listing';
 
 /* ── Mock data matching the API shape ─────────────────────────
    Replace this with a real fetch once the API is ready.
@@ -119,9 +119,9 @@ export default async function VetDetailRoute({
       <main className="min-h-screen flex flex-col items-center justify-center gap-4 text-white">
         <h1 className="text-3xl font-bold text-[#F7941D]">Clinic Not Found</h1>
         <p className="text-white/60">We couldn&apos;t find this clinic. Please go back and try again.</p>
-        <a href="/vet-finder" className="mt-4 px-6 py-3 rounded-xl bg-[#F7941D] text-[#1D1D1F] font-semibold hover:bg-[#d87c12] transition-colors">
+        <Link href="/vet-finder" className="mt-4 px-6 py-3 rounded-xl bg-[#F7941D] text-[#1D1D1F] font-semibold hover:bg-[#d87c12] transition-colors">
           Back to Vet Finder
-        </a>
+        </Link>
       </main>
     );
   }

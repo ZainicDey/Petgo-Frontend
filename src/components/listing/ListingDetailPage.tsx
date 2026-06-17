@@ -58,7 +58,7 @@ export interface ListingDetailData {
 /** @deprecated Use ListingDetailData instead */
 export type VetDetailData = ListingDetailData;
 
-interface ListingDetailPageProps {
+export interface ListingDetailPageProps {
   data: ListingDetailData;
   /** Label for the CTA button. Defaults to "Book an Appointment" */
   ctaLabel?: string;

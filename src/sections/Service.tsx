@@ -49,6 +49,7 @@ const cards = [
     variant: 'zoom' as const,
     title: 'Pet E-commerce',
     description: 'Shop pet essentials with just a tap.',
+    href: '/pet-shop'
   },
 ];
 

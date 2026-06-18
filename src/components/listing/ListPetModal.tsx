@@ -156,12 +156,16 @@ export default function ListPetModal({ isOpen, onClose }: ListPetModalProps) {
                 lineHeight: '20px',
               }}
             >
-              Fill in the details to help find a perfect home for your pet. All fields are required.
+              Fill in the details to help find a perfect home for your pet. All
+              fields are required.
             </p>
           </div>
 
           {/* Form Fields */}
-          <div className="flex flex-col gap-5 mt-2" style={{ fontFamily: '"Open Sans", sans-serif' }}>
+          <div
+            className="flex flex-col gap-5 mt-2"
+            style={{ fontFamily: '"Open Sans", sans-serif' }}
+          >
             <div className="flex gap-4">
               <div className="flex flex-col gap-2 flex-1">
                 <label className="text-white text-[14px]">Pet Name *</label>
@@ -246,7 +250,9 @@ export default function ListPetModal({ isOpen, onClose }: ListPetModalProps) {
             </div>
             <div className="flex gap-4">
               <div className="flex flex-col gap-2 flex-1">
-                <label className="text-white text-[14px]">Contact (Phone)</label>
+                <label className="text-white text-[14px]">
+                  Contact (Phone)
+                </label>
                 <input
                   type="text"
                   placeholder="Your name"
@@ -254,7 +260,9 @@ export default function ListPetModal({ isOpen, onClose }: ListPetModalProps) {
                 />
               </div>
               <div className="flex flex-col gap-2 flex-1">
-                <label className="text-white text-[14px]">Emergency Contact *</label>
+                <label className="text-white text-[14px]">
+                  Emergency Contact *
+                </label>
                 <input
                   type="text"
                   placeholder="Your contact information"
@@ -266,15 +274,24 @@ export default function ListPetModal({ isOpen, onClose }: ListPetModalProps) {
             {/* Checkboxes */}
             <div className="flex gap-6 mt-2">
               <label className="flex items-center gap-2 cursor-pointer text-white text-[14px]">
-                <input type="checkbox" className="appearance-none w-4 h-4 rounded-[4px] border border-white/30 bg-white checked:bg-[#2563EB] checked:border-[#2563EB] checked:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22white%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.207%204.793a1%201%200%20010%201.414l-5%205a1%201%200%2001-1.414%200l-2-2a1%201%200%20011.414-1.414L6.5%209.086l4.293-4.293a1%201%200%20011.414%200z%22%2F%3E%3C%2Fsvg%3E')] bg-center bg-no-repeat focus:outline-none focus:ring-1 focus:ring-[#2563EB] focus:ring-offset-0 cursor-pointer transition-all" />
+                <input
+                  type="checkbox"
+                  className="appearance-none w-4 h-4 rounded-[4px] border border-white/30 bg-white checked:bg-[#BE1E2D] checked:border-[#BE1E2D] checked:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22white%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.207%204.793a1%201%200%20010%201.414l-5%205a1%201%200%2001-1.414%200l-2-2a1%201%200%20011.414-1.414L6.5%209.086l4.293-4.293a1%201%200%20011.414%200z%22%2F%3E%3C%2Fsvg%3E')] bg-center bg-no-repeat focus:outline-none focus:ring-1 focus:ring-[#BE1E2D] focus:ring-offset-0 cursor-pointer transition-all"
+                />
                 Healthy
               </label>
               <label className="flex items-center gap-2 cursor-pointer text-white text-[14px]">
-                <input type="checkbox" className="appearance-none w-4 h-4 rounded-[4px] border border-white/30 bg-white checked:bg-[#2563EB] checked:border-[#2563EB] checked:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22white%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.207%204.793a1%201%200%20010%201.414l-5%205a1%201%200%2001-1.414%200l-2-2a1%201%200%20011.414-1.414L6.5%209.086l4.293-4.293a1%201%200%20011.414%200z%22%2F%3E%3C%2Fsvg%3E')] bg-center bg-no-repeat focus:outline-none focus:ring-1 focus:ring-[#2563EB] focus:ring-offset-0 cursor-pointer transition-all" />
+                <input
+                  type="checkbox"
+                  className="appearance-none w-4 h-4 rounded-[4px] border border-white/30 bg-white checked:bg-[#BE1E2D] checked:border-[#BE1E2D] checked:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22white%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.207%204.793a1%201%200%20010%201.414l-5%205a1%201%200%2001-1.414%200l-2-2a1%201%200%20011.414-1.414L6.5%209.086l4.293-4.293a1%201%200%20011.414%200z%22%2F%3E%3C%2Fsvg%3E')] bg-center bg-no-repeat focus:outline-none focus:ring-1 focus:ring-[#BE1E2D] focus:ring-offset-0 cursor-pointer transition-all"
+                />
                 Vaccinated
               </label>
               <label className="flex items-center gap-2 cursor-pointer text-white text-[14px]">
-                <input type="checkbox" className="appearance-none w-4 h-4 rounded-[4px] border border-white/30 bg-white checked:bg-[#2563EB] checked:border-[#2563EB] checked:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22white%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.207%204.793a1%201%200%20010%201.414l-5%205a1%201%200%2001-1.414%200l-2-2a1%201%200%20011.414-1.414L6.5%209.086l4.293-4.293a1%201%200%20011.414%200z%22%2F%3E%3C%2Fsvg%3E')] bg-center bg-no-repeat focus:outline-none focus:ring-1 focus:ring-[#2563EB] focus:ring-offset-0 cursor-pointer transition-all" />
+                <input
+                  type="checkbox"
+                  className="appearance-none w-4 h-4 rounded-[4px] border border-white/30 bg-white checked:bg-[#BE1E2D] checked:border-[#BE1E2D] checked:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22white%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.207%204.793a1%201%200%20010%201.414l-5%205a1%201%200%2001-1.414%200l-2-2a1%201%200%20011.414-1.414L6.5%209.086l4.293-4.293a1%201%200%20011.414%200z%22%2F%3E%3C%2Fsvg%3E')] bg-center bg-no-repeat focus:outline-none focus:ring-1 focus:ring-[#BE1E2D] focus:ring-offset-0 cursor-pointer transition-all"
+                />
                 Not-Vaccinated
               </label>
             </div>

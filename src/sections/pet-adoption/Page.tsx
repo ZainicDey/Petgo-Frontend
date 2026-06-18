@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import AdoptionCard, { AdoptionData } from './AdoptionCard';
 import { motion, Variants } from 'framer-motion';
 import BookingModal from '@/components/listing/BookingModal';
+import ListPetModal from '@/components/listing/ListPetModal';
 
 const PET_TYPES = ['All Types', 'Dogs', 'Cats', 'Other Pets'];
 
@@ -137,6 +138,7 @@ export default function PetAdoptionPage() {
   const typeDropdownRef = useRef<HTMLDivElement>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPet, setSelectedPet] = useState<AdoptionData | null>(null);
+  const [listPetModalOpen, setListPetModalOpen] = useState(false);
 
   const handleContactDonor = (item: AdoptionData) => {
     setSelectedPet(item);
@@ -282,6 +284,7 @@ export default function PetAdoptionPage() {
 
               {/* List Pet Button */}
               <button
+                onClick={() => setListPetModalOpen(true)}
                 className="bg-[#BE1E2D] text-[#FFF] px-6 py-3.5 rounded-[18px] whitespace-nowrap hover:bg-[#a01925] active:scale-95 cursor-pointer transition-all flex items-center gap-2"
                 style={{
                   fontFamily: '"Open Sans", sans-serif',
@@ -375,6 +378,7 @@ export default function PetAdoptionPage() {
           variant="pet-adoption"
         />
       )}
+      <ListPetModal isOpen={listPetModalOpen} onClose={() => setListPetModalOpen(false)} />
     </>
   );
 }

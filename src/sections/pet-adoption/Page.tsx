@@ -372,6 +372,7 @@ export default function PetAdoptionPage() {
             phone_number: '+8801966-440001',
           }}
           hideCard={true}
+          variant="pet-adoption"
         />
       )}
     </>

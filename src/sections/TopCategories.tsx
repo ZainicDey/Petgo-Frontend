@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image, { type StaticImageData } from 'next/image';
+import Link from 'next/link';
 
 import kittenNibbles from '@/assets/images/kitten-nibbles.png';
 import whiskasOceanFish from '@/assets/images/whiskas-ocean-fish.png';
@@ -30,6 +31,7 @@ interface Product {
   price: number;
   image: StaticImageData;
   category: Category;
+  overflow: boolean;
 }
 
 /* ─── Product data ─── */
@@ -40,6 +42,7 @@ const products: Product[] = [
     price: 32,
     image: kittenNibbles,
     category: 'foods',
+    overflow: true,
   },
   {
     id: 2,
@@ -47,6 +50,7 @@ const products: Product[] = [
     price: 32,
     image: whiskasOceanFish,
     category: 'foods',
+    overflow: true,
   },
   {
     id: 3,
@@ -54,6 +58,7 @@ const products: Product[] = [
     price: 32,
     image: pedigreePuppy,
     category: 'foods',
+    overflow: true,
   },
   {
     id: 4,
@@ -61,6 +66,7 @@ const products: Product[] = [
     price: 45,
     image: petVitamins,
     category: 'medicine',
+    overflow: false,
   },
   {
     id: 5,
@@ -68,6 +74,7 @@ const products: Product[] = [
     price: 18,
     image: catTreats,
     category: 'foods',
+    overflow: true,
   },
   {
     id: 6,
@@ -75,6 +82,7 @@ const products: Product[] = [
     price: 55,
     image: dogMedicine,
     category: 'medicine',
+    overflow: false,
   },
 ];
 
@@ -115,14 +123,22 @@ function ProductCard({ product }: { product: Product }) {
     <div className="group flex flex-col gap-4 mt-16 mx-auto w-full max-w-[372px]">
       {/* Card container */}
       <div className="relative w-full aspect-[372/424] rounded-[32px] bg-[#151515] border border-white/5 transition-colors duration-300">
-        {/* Product image floating out of container */}
-        <div className="absolute -top-[15%] left-0 right-0 bottom-6 flex justify-center items-end pointer-events-none">
+        {/* Product image floating out of container or inside based on property */}
+        <div
+          className={`absolute flex justify-center pointer-events-none ${
+            product.overflow
+              ? '-top-[15%] left-0 right-0 bottom-6 items-end'
+              : 'inset-0 p-2 items-center'
+          }`}
+        >
           <Image
             src={product.image}
             alt={product.name}
             width={300}
             height={400}
-            className="object-contain w-[85%] h-full drop-shadow-2xl transition-all duration-500"
+            className={`object-contain drop-shadow-2xl transition-all duration-500 ${
+              product.overflow ? 'w-[85%] h-full' : 'w-[95%] h-[95%]'
+            }`}
           />
         </div>
       </div>
@@ -167,26 +183,46 @@ export default function TopCategories() {
 
         {/* ── Category Tabs ── */}
         <div className="flex items-center justify-center gap-3 mb-12 flex-wrap">
-          {categories.map((cat) => (
-            <button
-              key={cat.key}
-              onClick={() => setActiveCategory(cat.key)}
-              className={`
-                flex justify-center items-center gap-[10px] py-[14px] px-[25px] rounded-[18px] text-[13px] md:text-[14px] font-semibold uppercase tracking-wider
-                border transition-all duration-300 cursor-pointer select-none
-                ${
-                  activeCategory === cat.key
-                    ? 'bg-[#FFF0DE] text-[#212A2C] border-[#FFF0DE] shadow-[0_0_20px_rgba(255,240,222,0.15)]'
-                    : 'bg-[#212A2C] text-white/70 border-[rgba(33,42,44,0.15)] hover:text-white hover:bg-[#2a3437]'
-                }
-              `}
-            >
-              <span className="flex items-center justify-center">
-                {cat.icon}
-              </span>
-              {cat.label}
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const isAll = cat.key === 'all';
+            const buttonClasses = `
+              flex justify-center items-center gap-[10px] py-[14px] px-[25px] rounded-[18px] text-[13px] md:text-[14px] font-semibold uppercase tracking-wider
+              border transition-all duration-300 cursor-pointer select-none
+              ${
+                activeCategory === cat.key
+                  ? 'bg-[#FFF0DE] text-[#212A2C] border-[#FFF0DE] shadow-[0_0_20px_rgba(255,240,222,0.15)]'
+                  : 'bg-[#212A2C] text-white/70 border-[rgba(33,42,44,0.15)] hover:text-white hover:bg-[#2a3437]'
+              }
+            `;
+
+            if (isAll) {
+              return (
+                <Link
+                  key={cat.key}
+                  href="/pet-shop"
+                  className={buttonClasses}
+                >
+                  <span className="flex items-center justify-center">
+                    {cat.icon}
+                  </span>
+                  {cat.label}
+                </Link>
+              );
+            }
+
+            return (
+              <button
+                key={cat.key}
+                onClick={() => setActiveCategory(cat.key)}
+                className={buttonClasses}
+              >
+                <span className="flex items-center justify-center">
+                  {cat.icon}
+                </span>
+                {cat.label}
+              </button>
+            );
+          })}
         </div>
 
         {/* ── Products Carousel ── */}

@@ -113,12 +113,12 @@ export default function Footer() {
             <OutlineButton label="Services" href="#" />
             <OutlineButton label="Community" href="#" />
             <OutlineButton label="Blog" href="#" />
-            <Button
+            {/* <Button
               label="Survey"
               href="#"
               variant="solid"
               className="rounded-full !w-auto px-8"
-            />
+            /> */}
           </div>
         </div>
 

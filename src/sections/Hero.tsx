@@ -14,18 +14,18 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col md:flex-row items-center justify-center px-6 pt-10 pb-64 md:pt-12 pointer-events-none gap-8 md:gap-5">
         {/* ── Left Column: Heading + CTA ── */}
         <div className="relative z-10 flex flex-col pl-0 md:pl-54 gap-10 md:gap-15 pointer-events-auto md:bottom-8 items-center md:items-start text-center md:text-left">
-          <h1 className="text-[40px] md:text-[82px] font-[650] leading-[1.05] tracking-tight text-[#ffffff] uppercase">
+          <h1 className="text-[40px] md:text-[82px] font-[650] leading-[1] tracking-tight text-[#ffffff] uppercase">
             Redefining
             <span className="flex items-baseline justify-center md:justify-start gap-4 font-[650] tracking-[0.001em]">
-              <span className="text-[#dc871f]">Pet</span>
-              <span className="text-[#e68d21]">Care</span>
+              <span className="text-[#ffa02c]">Pet</span>
+              <span className="text-[#ffa02c]">Care</span>
               <span className="mb-2">IN</span>
             </span>
             Bangladesh
           </h1>
 
           <div>
-            <Button label="TAKE OUR SURVEY" href="/survey" variant="gradient" />
+            <Button label="BROWSE OUR PRODUCTS" href="/pet-shop" variant="gradient" />
           </div>
         </div>
 

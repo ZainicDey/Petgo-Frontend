@@ -36,8 +36,8 @@ const campaigns = [
 const CameraIcon = ({ selected }: { selected: boolean }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="26"
-    height="26"
+    width="24"
+    height="24"
     viewBox="0 0 24 24"
     fill="none"
     stroke={selected ? '#F7941D' : '#ffffff'}
@@ -97,16 +97,16 @@ export default function Campaign() {
         IMAGE GALLERY
       </h2>
 
-      <div className="flex flex-col md:flex-row gap-12 p-3 md:py-12 rounded-[24px] border border-white/15 bg-campaign-radial">
+      <div className="flex flex-col md:flex-row md:items-center gap-12 p-3 md:py-12 rounded-[24px] border border-white/15 bg-campaign-radial">
         {/* Sidebar */}
-        <div className="flex flex-col gap-3.5 w-full md:w-[345px] shrink-0">
+        <div className="flex flex-col gap-2.5 w-full md:w-[345px] shrink-0 justify-center">
           {campaigns.map((campaign, index) => {
             const isSelected = selectedIndex === index;
             return (
               <button
                 key={campaign.id}
                 onClick={() => setSelectedIndex(index)}
-                className={`flex items-center gap-4 w-full text-left px-5 py-4 rounded-[14px] transition-all duration-300 ${
+                className={`flex items-center gap-3.5 w-full text-left px-5 py-3.5 rounded-[12px] transition-all duration-300 ${
                   isSelected
                     ? 'bg-white text-black shadow-md'
                     : 'bg-transparent text-[#9CA3AF] hover:text-white hover:bg-white/5'

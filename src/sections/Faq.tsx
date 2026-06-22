@@ -81,40 +81,54 @@ export default function Faq() {
           FAQ
         </h2>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-[#111111] border border-white/10 rounded-lg overflow-hidden transition-all duration-300"
+              className="bg-[#1c1919] border border-white/20 rounded-lg overflow-hidden transition-all duration-300"
             >
               <button
                 onClick={() => toggleFaq(index)}
-                className="w-full flex items-center gap-5 px-6 py-5 md:px-8 md:py-6 text-left focus:outline-none"
+                className="w-full my-3 flex items-center gap-3 text-left focus:outline-none"
               >
-                <div className="shrink-0 text-[#F7941D] flex items-center justify-center w-6 h-6">
+                <div className="ml-5 shrink-0 text-[#F7941D] flex items-center justify-center w-6 h-6">
                   {openIndex === index ? (
-                    <span className="text-[32px] leading-none block font-light mt-[-2px]">
-                      −
-                    </span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2.5"
+                      stroke="currentColor"
+                      className="w-5 h-5"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
+                    </svg>
                   ) : (
-                    <span className="text-[28px] leading-none block font-light">
-                      +
-                    </span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2.5"
+                      stroke="currentColor"
+                      className="w-5 h-5"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
                   )}
                 </div>
-                <span className="text-white/90 text-[17px] md:text-[19px] font-medium flex-1">
+                <span className="text-white/90 text-[22px] md:text-[21px] font-[family-name:var(--font-opensans)] flex-1">
                   {faq.question}
                 </span>
               </button>
 
               <div
-                className={`transition-all duration-300 ease-in-out px-6 md:px-8 overflow-hidden ${
+                className={`transition-all duration-300 ease-in-out overflow-hidden ${
                   openIndex === index
-                    ? 'max-h-[500px] opacity-100 pb-6'
+                    ? 'max-h-[500px] opacity-100 pb-5'
                     : 'max-h-0 opacity-0 pb-0'
                 }`}
               >
-                <p className="text-white/60 text-[15px] md:text-[16px] leading-relaxed pl-11">
+                <p className="text-white/60 text-[15px] md:text-[17px] leading-relaxed pl-11">
                   {faq.answer}
                 </p>
               </div>

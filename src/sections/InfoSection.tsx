@@ -3,7 +3,7 @@ import infoImage from "@/assets/images/thumnail-info.png";
 
 export default function InfoSection() {
   return (
-    <section className="py-10 md:py-16 bg-black">
+    <section className="py-10 md:py-16 mb-42 bg-black">
       <div className="container mx-auto px-6 md:px-16 max-w-5xl">
         {/* Video / Image Container */}
         <div className="relative w-full rounded-[2rem] overflow-hidden group cursor-pointer">

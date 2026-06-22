@@ -1,5 +1,6 @@
 import prebookImage from '@/assets/images/Preebook image.png';
 import Image from 'next/image';
+import Button from '@/components/Buttton';
 
 export default function PreBook() {
   return (
@@ -7,7 +8,7 @@ export default function PreBook() {
       <div className="container mx-auto px-6 md:px-16">
         <div className="relative flex flex-col md:flex-row items-center rounded-3xl bg-[#212A2C] overflow-hidden">
           {/* Badge */}
-          <div className="shrink-0 z-10 pt-8 md:pt-0 pl-0 md:pl-14">
+          {/* <div className="shrink-0 z-10 pt-8 md:pt-0 pl-0 md:pl-14">
             <div
               className="flex items-center gap-3 rounded-[18px] px-5 py-3"
               style={{
@@ -41,6 +42,14 @@ export default function PreBook() {
                 PRE-BOOK TODAY!
               </h3>
             </div>
+          </div> */}
+
+          <div className="shrink-0 z-10 pt-8 md:pt-0 pl-0 md:pl-14">
+            <Button
+              variant="gradient"
+              label="BROWSE OUR PRODUCTS"
+              href="/pet-shop"
+            />
           </div>
 
           {/* Heading */}

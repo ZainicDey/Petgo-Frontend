@@ -127,7 +127,7 @@ export default function ListPetModal({ isOpen, onClose }: ListPetModalProps) {
         }`}
         onTransitionEnd={handleTransitionEnd}
       >
-        <div className="flex-1 overflow-y-auto p-8 flex flex-col gap-6 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-8 flex flex-col gap-4">
           {/* Close Button */}
           <button
             onClick={onClose}

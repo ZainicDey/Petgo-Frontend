@@ -199,12 +199,11 @@ export default function Data() {
             </div>
 
             {/* Source footnote */}
-            <p className="text-white/30 text-[11px] md:text-[12px] mt-1">
+            <p className="text-white/30 text-[12px] md:text-[14px] mt-1 font-light">
               *Data collected from various{' '}
-              <span className="text-[#f71d1d] underline underline-offset-2 cursor-pointer hover:text-[#ae0606]/80 transition-colors">
+              <span className="text-[#f71d1d] font-light">
                 sources
               </span>
-              .
             </p>
           </div>
         </div>

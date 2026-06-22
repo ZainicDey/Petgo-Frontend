@@ -17,6 +17,13 @@ import {
 
 const cards = [
   {
+    image: petEcommerce,
+    variant: 'zoom' as const,
+    title: 'Pet E-commerce',
+    description: 'Shop pet essentials with just a tap.',
+    href: '/pet-shop',
+  },
+  {
     image: vetFinder,
     variant: 'search' as const,
     title: 'Vet Finder',
@@ -44,18 +51,11 @@ const cards = [
     description: 'Adopt a pet, save a life.',
     href: '/pet-adoption',
   },
-  {
-    image: petEcommerce,
-    variant: 'zoom' as const,
-    title: 'Pet E-commerce',
-    description: 'Shop pet essentials with just a tap.',
-    href: '/pet-shop'
-  },
-];
+]
 
 export default function Service() {
   return (
-    <section className="bg-[#111111] py-22">
+    <section className="bg-[#111111] py-47">
       <h1 className="text-center text-6xl font-bold text-white mb-16">
         OUR SERVICES
       </h1>

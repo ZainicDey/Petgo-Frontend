@@ -6,6 +6,7 @@
 
 @theme {
   --font-sans: var(--font-gabarito), ui-sans-serif, system-ui, sans-serif;
+  --font-open-sans: var(--font-opensans), sans-serif;
   --color-brand-orange: #ff5c00;
   --color-brand-red: #e50914;
   --color-brand-bg: #000000;
@@ -215,6 +216,12 @@ html {
   }
 }
 
+.animate-fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+
 /* ── Hide scrollbar utility ── */
 .scrollbar-hide {
   -ms-overflow-style: none;
@@ -244,3 +251,27 @@ html {
   background-size: 400px 100%;
   animation: shimmer 1.4s ease-in-out infinite;
 }
+
+/* ── Community Nav Button Responsive Variables ── */
+:root {
+  --nav-btn-width: 100%;
+  --nav-btn-height: 46px;
+  --nav-btn-font-size: 5px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --nav-btn-width: 42px;
+    --nav-btn-height: 42px;
+    --nav-btn-font-size: 5px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --nav-btn-width: 195px; /* narrower width as requested */
+    --nav-btn-height: 33px; /* slightly taller height */
+    --nav-btn-font-size: 15px /* font size value */
+  }
+}
+

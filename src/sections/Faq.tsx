@@ -33,7 +33,7 @@ export default function Faq() {
   };
 
   return (
-    <section className="bg-black py-24 relative overflow-hidden">
+    <section id="faq" className="bg-black py-24 relative overflow-hidden">
       {/* ── Background Question Marks ── */}
 
       {/* Top Left Red ? */}

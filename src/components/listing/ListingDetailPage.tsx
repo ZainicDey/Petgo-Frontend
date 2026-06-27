@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import BookingModal from '@/components/listing/BookingModal';
@@ -38,6 +38,8 @@ export type Veterinarian = TeamMember;
 export interface ListingDetailData {
   id: number;
   image: string | null;
+  /** Optional array of image URLs for the gallery slideshow */
+  images?: string[];
   name: string;
   about: string;
   street: string;
@@ -259,6 +261,177 @@ const WhatsAppIcon = () => (
   </svg>
 );
 
+/* ── Chevron Icons for Gallery ────────────────────────────────── */
+
+const ChevronLeftIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none">
+    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const ChevronRightIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none">
+    <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const RatingFullIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
+    <g clipPath="url(#clip0_2003_1649)">
+      <path d="M16.8229 6.111H10.3969L8.41093 0L6.43994 8.083L8.41093 12.223L13.6109 16L11.6249 9.889L16.8229 6.111Z" fill="#E67136"/>
+      <path d="M6.426 6.111H0L5.2 9.888L3.213 16L8.413 12.223V0L6.426 6.111Z" fill="#E67136"/>
+    </g>
+    <defs>
+      <clipPath id="clip0_2003_1649">
+        <rect width="16.823" height="16" fill="white"/>
+      </clipPath>
+    </defs>
+  </svg>
+);
+
+const RatingHalfIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
+    <path d="M16.8229 6.111H10.3969L8.41093 0L6.43994 8.083L8.41093 12.223L13.6109 16L11.6249 9.889L16.8229 6.111Z" fill="#E67136" fillOpacity="0.5"/>
+    <path d="M6.426 6.111H0L5.2 9.888L3.213 16L8.413 12.223V0L6.426 6.111Z" fill="#E67136"/>
+  </svg>
+);
+
+/* ── Image Gallery with Slideshow ────────────────────────────── */
+
+function ImageGallery({ images, name }: { images: string[]; name: string }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const thumbnailContainerRef = useRef<HTMLDivElement>(null);
+  const hasMultiple = images.length > 1;
+
+  // Auto-advance every 10 seconds
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    if (!hasMultiple) return;
+    timerRef.current = setInterval(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setActiveIndex((prev) => (prev + 1) % images.length);
+        setIsTransitioning(false);
+      }, 300);
+    }, 10000);
+  }, [hasMultiple, images.length]);
+
+  useEffect(() => {
+    resetTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [resetTimer]);
+
+  const goTo = useCallback(
+    (index: number) => {
+      if (index === activeIndex) return;
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setActiveIndex(index);
+        setIsTransitioning(false);
+      }, 300);
+      resetTimer();
+    },
+    [activeIndex, resetTimer]
+  );
+
+  const goPrev = useCallback(() => {
+    goTo((activeIndex - 1 + images.length) % images.length);
+  }, [activeIndex, images.length, goTo]);
+
+  const goNext = useCallback(() => {
+    goTo((activeIndex + 1) % images.length);
+  }, [activeIndex, images.length, goTo]);
+
+  // Scroll thumbnail into view
+  useEffect(() => {
+    if (!thumbnailContainerRef.current || !hasMultiple) return;
+    const container = thumbnailContainerRef.current;
+    const thumb = container.children[activeIndex] as HTMLElement | undefined;
+    if (thumb) {
+      thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  }, [activeIndex, hasMultiple]);
+
+  return (
+    <div className="flex flex-col gap-3">
+      {/* Main Image */}
+      <div className="relative w-full h-[300px] md:h-[430px] rounded-2xl overflow-hidden bg-[#1A1A1D] border border-[#2a2a2d]">
+        <Image
+          src={images[activeIndex]}
+          alt={`${name} - Image ${activeIndex + 1}`}
+          fill
+          className={`object-cover transition-opacity duration-300 ${
+            isTransitioning ? 'opacity-0' : 'opacity-100'
+          }`}
+          sizes="(max-width: 1024px) 100vw, 60vw"
+          priority={activeIndex === 0}
+        />
+      </div>
+
+      {/* Thumbnail Strip & Counter (hidden if single image) */}
+      {hasMultiple && (
+        <div className="relative flex flex-col gap-2.5 items-center">
+          {/* Number Counter */}
+          <div className="text-white/50 text-[13px] font-normal font-sans">
+            {activeIndex + 1} / {images.length}
+          </div>
+
+          <div className="flex items-center gap-2 max-w-full self-start">
+            {/* Left Arrow */}
+            <button
+              onClick={goPrev}
+              className="shrink-0 w-8 h-8 rounded-full border border-white/10 bg-white/5 text-white/60 hover:text-white hover:border-white/30 flex items-center justify-center transition-all duration-150 cursor-pointer"
+              aria-label="Previous image"
+            >
+              <ChevronLeftIcon />
+            </button>
+
+            {/* Scrollable Thumbnails */}
+            <div
+              ref={thumbnailContainerRef}
+              className="flex gap-2 overflow-x-auto scrollbar-hide py-1 min-w-0"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {images.map((src, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => goTo(idx)}
+                  className={`shrink-0 relative w-[72px] h-[54px] rounded-lg overflow-hidden border-2 transition-all duration-200 cursor-pointer ${
+                    idx === activeIndex
+                      ? 'border-[#F7941D] ring-1 ring-[#F7941D]/30'
+                      : 'border-transparent hover:border-white/30 opacity-60 hover:opacity-100'
+                  }`}
+                >
+                  <Image
+                    src={src}
+                    alt={`${name} thumbnail ${idx + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="72px"
+                  />
+                </button>
+              ))}
+            </div>
+
+            {/* Right Arrow */}
+            <button
+              onClick={goNext}
+              className="shrink-0 w-8 h-8 rounded-full border border-white/10 bg-white/5 text-white/60 hover:text-white hover:border-white/30 flex items-center justify-center transition-all duration-150 cursor-pointer"
+              aria-label="Next image"
+            >
+              <ChevronRightIcon />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 const BackIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -284,6 +457,36 @@ const AVATAR_COLORS = [
   { bg: '#27AE60', text: '#FFFFFF' }, // green
   { bg: '#F7941D', text: '#1D1D1F' }, // yellow/orange
 ];
+
+function ReviewAvatar({ name, index }: { name: string; index: number }) {
+  const initials = name
+    .split(' ')
+    .filter((p) => p.length > 0)
+    .slice(0, 2)
+    .map((p) => p[0])
+    .join('');
+
+  const colorScheme = AVATAR_COLORS[index % AVATAR_COLORS.length];
+
+  return (
+    <div
+      className="relative shrink-0 w-12 h-12 rounded-full overflow-hidden flex items-center justify-center"
+      style={{ background: colorScheme.bg }}
+    >
+      <span
+        style={{
+          color: colorScheme.text,
+          fontFamily: 'Open Sans',
+          fontSize: '16px',
+          fontWeight: 400,
+          userSelect: 'none',
+        }}
+      >
+        {initials}
+      </span>
+    </div>
+  );
+}
 
 function VetAvatar({ vet, index }: { vet: TeamMember; index: number }) {
   const initials = vet.name
@@ -416,35 +619,31 @@ export default function ListingDetailPage({
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* ── LEFT COLUMN ── */}
           <div className="flex-1 min-w-0 w-full max-w-[860px] flex flex-col gap-6">
-            {/* Hero Image */}
-            <div className="relative w-full h-[300px] md:h-[430px] rounded-2xl overflow-hidden bg-[#1A1A1D] border border-[#2a2a2d]">
-              {data.image ? (
-                <Image
-                  src={data.image}
-                  alt={data.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 60vw"
-                  priority
-                />
-              ) : (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-[#1a1a1d] to-[#222228]">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="64"
-                    height="64"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                    <path
-                      d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM13.96 12.29L11.21 15.83L9.25 13.47L6.5 17H17.5L13.96 12.29Z"
-                      fill="#3a3a3d"
-                    />
-                  </svg>
-                  <span className="text-white/20 text-sm">{data.name}</span>
-                </div>
-              )}
-            </div>
+            {/* Hero Image / Gallery */}
+            {(() => {
+              // Build the gallery image list: prefer `images` array, fall back to single `image`
+              const galleryImages = data.images && data.images.length > 0
+                ? data.images
+                : data.image
+                  ? [data.image]
+                  : [];
+
+              if (galleryImages.length === 0) {
+                // No images — show placeholder
+                return (
+                  <div className="relative w-full h-[300px] md:h-[430px] rounded-2xl overflow-hidden bg-[#1A1A1D] border border-[#2a2a2d]">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-[#1a1a1d] to-[#222228]">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none">
+                        <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM13.96 12.29L11.21 15.83L9.25 13.47L6.5 17H17.5L13.96 12.29Z" fill="#3a3a3d" />
+                      </svg>
+                      <span className="text-white/20 text-sm">{data.name}</span>
+                    </div>
+                  </div>
+                );
+              }
+
+              return <ImageGallery images={galleryImages} name={data.name} />;
+            })()}
 
             {/* About */}
             <div
@@ -485,6 +684,78 @@ export default function ListingDetailPage({
                 </div>
               </div>
             )}
+
+            {/* Reviews */}
+            <div
+              style={{
+                borderRadius: '18px',
+                border: '1px solid rgba(255, 240, 222, 0.075)',
+                background: 'rgba(255, 240, 222, 0.075)',
+              }}
+              className="p-6 flex flex-col gap-6"
+            >
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <h2 className="text-white font-[Gabarito] text-[20px] font-semibold">
+                  Reviews
+                </h2>
+                <div className="flex items-center gap-2">
+                  <span className="text-white font-[Gabarito] text-[18px] font-semibold">4.6</span>
+                  <div className="flex items-center gap-1">
+                    <RatingFullIcon />
+                    <RatingFullIcon />
+                    <RatingFullIcon />
+                    <RatingFullIcon />
+                    <RatingHalfIcon />
+                  </div>
+                  <span className="text-white/40 text-[14px] font-['Open_Sans']">(34 Reviews)</span>
+                </div>
+              </div>
+
+              {/* Reviews List */}
+              <div className="flex flex-col gap-6">
+                {[1, 2].map((review, idx) => (
+                  <div key={idx} className="flex flex-col gap-4">
+                    {idx > 0 && <div className="h-px bg-white/5 w-full" />}
+                    <div className="flex items-start gap-4">
+                      <ReviewAvatar name="Victoria S." index={idx} />
+                      <div className="flex flex-col gap-0.5">
+                        <h3 className="text-white font-[Gabarito] text-[16px] font-medium leading-tight">
+                          Victoria S.
+                        </h3>
+                        <span className="text-white/60 font-['Open_Sans'] text-[13px] leading-tight mb-1">
+                          Fresno, CA
+                        </span>
+                        <div className="flex items-center gap-1">
+                          <RatingFullIcon />
+                          <RatingFullIcon />
+                          <RatingFullIcon />
+                          <RatingFullIcon />
+                          <RatingFullIcon />
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-[#a0a0a0] font-['Open_Sans'] text-[15px] leading-[1.6]">
+                      I've never heard of this clinic, but was fortunate enough to receive a voucher for my pup's spay and they took the voucher and had the availability. The staff were very friendly and helpful in making sure I understood everything that was going to happen. The prices are relatively reasonable. They are efficient and the space itself is clean and open.
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* View More Button */}
+              <div className="mt-2">
+                <button
+                  className="px-5 py-2.5 text-white/90 font-['Open_Sans'] text-[14px] font-medium transition-colors hover:bg-white/10 cursor-pointer"
+                  style={{
+                    borderRadius: '18px',
+                    border: '1px solid rgba(255, 240, 222, 0.10)',
+                    background: 'rgba(255, 240, 222, 0.10)',
+                  }}
+                >
+                  View More Reviews
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* ── RIGHT COLUMN — Sticky Info Panel ── */}

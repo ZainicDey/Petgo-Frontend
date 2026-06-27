@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export interface AdoptionData {
   id: number;
@@ -52,7 +53,7 @@ export default function AdoptionCard({ item, onContactDonor }: { item: AdoptionD
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-[#1A1A1D] border border-[#2a2a2d] transition-all duration-300 hover:border-[#F7941D]/40 hover:shadow-[0_0_30px_rgba(247,148,29,0.08)]">
       {/* Image */}
-      <div className="relative w-full h-[220px] overflow-hidden">
+      <Link href={`/pet-adoption/${item.id}`} className="relative w-full h-[220px] overflow-hidden block">
         <Image
           src={item.image}
           alt={item.name}
@@ -60,13 +61,15 @@ export default function AdoptionCard({ item, onContactDonor }: { item: AdoptionD
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
-      </div>
+      </Link>
 
       <div className="flex flex-col flex-1 p-5">
         <div className="flex justify-between items-start mb-1">
-          <h3 className="text-[#FFF0DE] font-[Gabarito] text-[24px] font-[500] leading-[30px] not-italic">
-            {item.name}
-          </h3>
+          <Link href={`/pet-adoption/${item.id}`}>
+            <h3 className="text-[#FFF0DE] font-[Gabarito] text-[24px] font-[500] leading-[30px] not-italic hover:text-[#F7941D] transition-colors">
+              {item.name}
+            </h3>
+          </Link>
           <button className="text-orange-400 hover:scale-110 transition-transform">
             <HeartIcon />
           </button>

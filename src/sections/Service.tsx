@@ -51,7 +51,7 @@ const cards = [
     description: 'Adopt a pet, save a life.',
     href: '/pet-adoption',
   },
-]
+];
 
 export default function Service() {
   return (

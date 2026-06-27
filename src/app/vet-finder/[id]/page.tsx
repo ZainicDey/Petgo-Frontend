@@ -9,6 +9,7 @@ const MOCK_DETAILS: Record<number, ListingDetailData> = {
   1: {
     id: 1,
     image: '/vet-hospital-1.png',
+    images: ['/vet-hospital-1.png', '/vet-doctor-1.png', '/vet-hospital-1.png', '/vet-doctor-1.png'],
     name: 'Dhaka Veterinary Hospital',
     about:
       'Dhaka Veterinary Hospital has been serving the Dhaka community for over 15 years with dedication and compassion. Our team of experienced veterinarians and caring staff are committed to providing the highest quality medical care for your beloved pets.\n\nWe offer a comprehensive range of services including preventive care, diagnostic services, surgical procedures, and emergency care. Our state-of-the-art facility is equipped with modern medical technology to ensure accurate diagnoses and effective treatments for all types of pets.',

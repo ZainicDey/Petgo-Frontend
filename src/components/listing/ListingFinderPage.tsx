@@ -194,8 +194,8 @@ export default function ListingFinderPage({
       </div>
 
       {/* ── Search Bar ── */}
-      <div className="container mx-auto px-4 md:px-8 lg:px-16 mb-12 relative z-30">
-        <div className="flex flex-col mt-8 sm:flex-row items-stretch sm:items-center gap-4 max-w-2xl mx-auto sm:translate-x-10">
+      <div className="container mx-auto px-4 md:px-8 lg:px-16 mb-12 relative z-45">
+        <div className="flex flex-col mt-8 sm:flex-row items-stretch sm:items-center gap-4 max-w-[850px] mx-auto sm:translate-x-10">
           {/* Main Search Input & Area Select Container */}
           <div className="flex-1 flex flex-col sm:flex-row items-center min-h-[50px] rounded-[18px] bg-[rgba(255,240,222,0.10)] border border-[rgba(255,240,222,0.10)] pl-5 pr-3 py-2 sm:py-0">
             <input
@@ -268,11 +268,24 @@ export default function ListingFinderPage({
             </div>
           </div>
 
+          {/* Search Button */}
+          <Button
+            variant="solid"
+            label="Search"
+            onClick={handleSearch}
+            className="w-full sm:w-auto h-[50px] px-6 rounded-[18px] text-[16px] font-semibold"
+            icon={
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M8.95776 2.15219C10.7473 2.10324 12.4878 2.74161 13.821 3.93637C15.1541 5.13105 15.9789 6.79104 16.1257 8.57504C16.2725 10.3593 15.7302 12.1326 14.6101 13.5291L14.3289 13.8797L14.6482 14.1971L17.7351 17.2596C17.793 17.3213 17.8258 17.4024 17.8259 17.4872C17.8259 17.5727 17.7921 17.6547 17.7332 17.7166C17.7027 17.7466 17.6671 17.7715 17.6277 17.7879C17.5872 17.8047 17.5436 17.8133 17.4998 17.8133C17.4559 17.8133 17.4123 17.8048 17.3718 17.7879C17.3313 17.771 17.2944 17.7459 17.2634 17.7147L13.8787 14.3299L13.5291 14.6102C12.1325 15.7303 10.3592 16.2726 8.57495 16.1258C6.79095 15.979 5.13096 15.1542 3.93628 13.8211C2.74152 12.4879 2.10315 10.7474 2.1521 8.95786C2.20107 7.16828 2.93308 5.46496 4.19897 4.19907C5.46487 2.93317 7.16819 2.20116 8.95776 2.15219ZM11.5906 3.31528C10.4334 2.83597 9.15982 2.71066 7.9314 2.95493C6.70285 3.1993 5.57396 3.80259 4.68823 4.68832C3.8025 5.57406 3.19921 6.70294 2.95483 7.93149C2.71056 9.15991 2.83588 10.4335 3.31519 11.5907C3.79455 12.7478 4.60675 13.7366 5.64819 14.4325C6.68969 15.1284 7.91416 15.4998 9.16675 15.4998C10.8464 15.4998 12.4576 14.833 13.6453 13.6454C14.833 12.4577 15.4997 10.8465 15.4998 9.16684C15.4998 7.91425 15.1283 6.68978 14.4324 5.64828C13.7365 4.60684 12.7477 3.79464 11.5906 3.31528Z" fill="black" stroke="#FFF0DE"/>
+              </svg>
+            }
+          />
+
           {/* Filter Button */}
           <Button
             variant="outline"
             label="Filters"
-            onClick={() => setFilterOpen(true)}
+            onClick={() => setFilterOpen((prev) => !prev)}
             className="w-full sm:w-auto h-[50px] px-6 rounded-[18px] text-[16px] font-semibold border-[#2a2a2d] text-gray-300 hover:text-white hover:border-[#F7941D]/40 transition-all duration-200"
             icon={
               <svg
@@ -293,6 +306,19 @@ export default function ListingFinderPage({
         </div>
       </div>
 
+      {/* ── Inline Filter Panel ── */}
+      <ListingFilterModal
+        isOpen={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        currentFilters={filters}
+        onFilter={(f) => {
+          setFilters(f);
+          setVisibleCount(ITEMS_PER_PAGE);
+        }}
+        sortOptions={sortOptions}
+        filterSections={filterSections}
+      />
+
       {/* ── Results Section ── */}
       <div className="container mx-auto px-4 md:px-8 lg:px-16 pb-16">
         <ListingGrid
@@ -312,18 +338,7 @@ export default function ListingFinderPage({
         />
       </div>
 
-      {/* ── Filter Modal ── */}
-      <ListingFilterModal
-        isOpen={filterOpen}
-        onClose={() => setFilterOpen(false)}
-        currentFilters={filters}
-        onFilter={(f) => {
-          setFilters(f);
-          setVisibleCount(ITEMS_PER_PAGE);
-        }}
-        sortOptions={sortOptions}
-        filterSections={filterSections}
-      />
+
       {/* ── Booking Modal ── */}
       {selectedItem && (
         <BookingModal

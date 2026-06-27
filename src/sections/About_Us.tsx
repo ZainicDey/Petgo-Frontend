@@ -5,13 +5,13 @@ import star from '@/assets/images/star.svg';
 import Paw from '@/assets/images/Paw.png';
 export default function AboutUS() {
   return (
-    <section className="py-16 md:py-24 bg-black">
+    <section id="about-us" className="py-16 md:py-24 bg-black">
       <div className="container mx-auto px-6 md:px-16 relative">
         {/* ── Two-Column Layout ── */}
         <div className="flex flex-col md:flex-row items-center max-w-5xl mx-auto gap-12 md:gap-16">
           {/* ── Left Column: Title + Dog Image ── */}
           <div className="flex flex-col gap-8 w-full md:w-[440px] md:shrink-0">
-            <h2 className="text-[48px] md:text-[72px] font-bold leading-none uppercase text-white">
+            <h2 className="text-[48px] md:text-[72px] font-bold leading-none uppercase text-white select-none">
               About Us
             </h2>
             <div className="relative w-full max-w-[440px] h-[650px] rounded-[24px] overflow-hidden">

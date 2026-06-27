@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 /* ── Types ──────────────────────────────────────────────────── */
 
@@ -17,7 +17,7 @@ export interface FilterSection {
   options: string[];
 }
 
-interface ListingFilterModalProps {
+interface ListingFilterPanelProps {
   isOpen: boolean;
   onClose: () => void;
   onFilter: (filters: ListingFilterState) => void;
@@ -48,7 +48,111 @@ const DEFAULT_FILTER_SECTIONS: FilterSection[] = [
   },
 ];
 
-/* ── Component ──────────────────────────────────────────────── */
+/* ── Dropdown Component ─────────────────────────────────────── */
+
+function FilterDropdown({
+  label,
+  options,
+  selected,
+  onSelect,
+}: {
+  label: string;
+  options: string[];
+  selected: string | null;
+  onSelect: (value: string | null) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="flex flex-col gap-1.5 min-w-0 flex-1" ref={ref}>
+      <span className="text-white/50 text-[11px] font-semibold uppercase tracking-wider">
+        {label}
+      </span>
+      <div className="relative">
+        <button
+          onClick={() => setOpen((prev) => !prev)}
+          className={`w-full h-[38px] px-3 pr-8 rounded-[10px] border text-left text-[13px] font-normal flex items-center cursor-pointer transition-all duration-150 select-none ${
+            selected
+              ? 'border-[#F7941D]/50 bg-[#F7941D]/10 text-[#F7941D]'
+              : 'border-white/15 bg-white/5 text-white/70 hover:border-white/30'
+          }`}
+          style={{ fontFamily: '"Open Sans", sans-serif' }}
+        >
+          <span className="truncate">{selected || 'Any'}</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            fill="none"
+            className={`absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-200 ${
+              open ? 'rotate-180' : ''
+            }`}
+          >
+            <path
+              d="M5 7.5L10 12.5L15 7.5"
+              stroke={selected ? '#F7941D' : '#FFF0DE'}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+
+        {open && (
+          <div
+            className="absolute top-full left-0 mt-1 z-50 w-full min-w-[140px] bg-[#1A1A1D]/95 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150"
+            style={{ fontFamily: '"Open Sans", sans-serif' }}
+          >
+            {/* "Any" / clear option */}
+            <button
+              onClick={() => {
+                onSelect(null);
+                setOpen(false);
+              }}
+              className={`w-full text-left px-3 py-2 text-[13px] font-normal leading-[18px] transition-colors ${
+                !selected
+                  ? 'bg-[#F7941D]/15 text-[#F7941D]'
+                  : 'text-white/60 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              Any
+            </button>
+            {options.map((option) => (
+              <button
+                key={option}
+                onClick={() => {
+                  onSelect(option);
+                  setOpen(false);
+                }}
+                className={`w-full text-left px-3 py-2 text-[13px] font-normal leading-[18px] transition-colors ${
+                  selected === option
+                    ? 'bg-[#F7941D]/15 text-[#F7941D]'
+                    : 'text-white hover:bg-white/10'
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── Main Component ─────────────────────────────────────────── */
 
 export default function ListingFilterModal({
   isOpen,
@@ -57,7 +161,7 @@ export default function ListingFilterModal({
   currentFilters,
   sortOptions = DEFAULT_SORT_OPTIONS,
   filterSections = DEFAULT_FILTER_SECTIONS,
-}: ListingFilterModalProps) {
+}: ListingFilterPanelProps) {
   const [sortBy, setSortBy] = useState<string | null>(
     currentFilters?.sortBy || null
   );
@@ -65,25 +169,13 @@ export default function ListingFilterModal({
     currentFilters?.selections || {}
   );
 
-  // Sync local state when modal reopens
+  // Sync local state when panel reopens
   useEffect(() => {
     if (currentFilters) {
       setSortBy(currentFilters.sortBy);
       setSelections(currentFilters.selections);
     }
   }, [currentFilters, isOpen]);
-
-  // Prevent background scrolling
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
 
   const handleApply = (
     newSortBy: string | null,
@@ -92,147 +184,72 @@ export default function ListingFilterModal({
     onFilter({ sortBy: newSortBy, selections: newSelections });
   };
 
-  const toggleOption = (sectionLabel: string, option: string) => {
-    const current = selections[sectionLabel] || [];
-    const updated = current.includes(option)
-      ? current.filter((s) => s !== option)
-      : [...current, option];
-    const newSelections = { ...selections, [sectionLabel]: updated };
-    setSelections(newSelections);
-    handleApply(sortBy, newSelections);
-  };
-
-  const handleSortChange = (sort: string) => {
+  const handleSortChange = (sort: string | null) => {
     setSortBy(sort);
     handleApply(sort, selections);
   };
 
-  const handleClearFilters = () => {
-    setSortBy(null);
-    setSelections({});
-    handleApply(null, {});
+  const handleSectionChange = (sectionLabel: string, value: string | null) => {
+    const newSelections = {
+      ...selections,
+      [sectionLabel]: value ? [value] : [],
+    };
+    setSelections(newSelections);
+    handleApply(sortBy, newSelections);
   };
 
   if (!isOpen) return null;
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200"
-      onClick={onClose}
+      className="container mx-auto px-4 md:px-8 lg:px-16 relative z-30 -mt-6 mb-8 animate-in fade-in slide-in-from-top-3 duration-200"
+      style={{ fontFamily: '"Open Sans", sans-serif' }}
     >
-      <div
-        className="bg-[#1A1A1D] border border-[#2a2a2d] rounded-2xl w-full max-w-[320px] max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col animate-in zoom-in-95 duration-200 font-[family-name:var(--font-opensans)]"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="p-6 flex flex-col">
-          {/* Header */}
-          <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#2a2a2d]">
-            <h3 className="text-white text-lg font-normal">Filters</h3>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-white transition-colors p-1 cursor-pointer rounded-full hover:bg-[#2a2a2d]"
-              aria-label="Close filters"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
+      <div className="bg-[#141416] border border-white/10 rounded-2xl">
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-3 border-b border-white/8">
+          <div className="flex items-center gap-2 text-white/60 text-sm font-medium">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+              />
+            </svg>
+            <span>Filters</span>
           </div>
-
-          {/* Sort By */}
-          <div className="mb-6">
-            <h4 className="text-[#F7941D] text-base font-medium mb-3">
-              Sort By
-            </h4>
-            <div className="flex flex-col gap-3">
-              {sortOptions.map((option) => (
-                <div
-                  key={option}
-                  className="flex items-center gap-3 cursor-pointer group"
-                  onClick={() => handleSortChange(option)}
-                >
-                  <div
-                    className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-200 ${
-                      sortBy === option
-                        ? 'border-[#333] bg-transparent'
-                        : 'border-[#444] group-hover:border-[#F7941D]/60'
-                    }`}
-                  >
-                    {sortBy === option && (
-                      <div className="w-2 h-2 rounded-full bg-red-600" />
-                    )}
-                  </div>
-                  <span className="text-gray-300 text-sm">{option}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Dynamic Filter Sections */}
-          {filterSections.map((section) => (
-            <div key={section.label} className="mb-6">
-              <h4 className="text-[#F7941D] text-base font-medium mb-3">
-                {section.label}
-              </h4>
-              <div className="flex flex-col gap-3">
-                {section.options.map((option) => {
-                  const isSelected = (
-                    selections[section.label] || []
-                  ).includes(option);
-                  return (
-                    <div
-                      key={option}
-                      className="flex items-center gap-3 cursor-pointer group"
-                      onClick={() => toggleOption(section.label, option)}
-                    >
-                      <div
-                        className={`w-4 h-4 rounded-[4px] border flex items-center justify-center transition-all duration-200 ${
-                          isSelected
-                            ? 'bg-[#F7941D] border-[#F7941D]'
-                            : 'border-[#444] group-hover:border-[#F7941D]/60'
-                        }`}
-                      >
-                        {isSelected && (
-                          <svg
-                            className="w-3 h-3 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={3}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                        )}
-                      </div>
-                      <span className="text-gray-300 text-sm">{option}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-
-          {/* Clear Filters Button */}
           <button
-            onClick={handleClearFilters}
-            className="w-full py-3 rounded-xl border border-red-900/60 text-red-600 text-sm font-medium hover:bg-red-900/10 transition-colors cursor-pointer"
+            onClick={onClose}
+            className="text-white/30 hover:text-white transition-colors cursor-pointer p-1 rounded-full hover:bg-white/10"
+            aria-label="Close filters"
           >
-            Clear Filters
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
+        </div>
+
+        {/* Filter Row */}
+        <div className="flex flex-wrap gap-4 px-5 py-4">
+          {/* Sort By dropdown */}
+          <FilterDropdown
+            label="Sort By"
+            options={sortOptions}
+            selected={sortBy}
+            onSelect={handleSortChange}
+          />
+
+          {/* Dynamic filter section dropdowns */}
+          {filterSections.map((section) => (
+            <FilterDropdown
+              key={section.label}
+              label={section.label}
+              options={section.options}
+              selected={(selections[section.label] || [])[0] || null}
+              onSelect={(value) => handleSectionChange(section.label, value)}
+            />
+          ))}
         </div>
       </div>
     </div>

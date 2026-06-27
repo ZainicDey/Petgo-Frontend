@@ -23,3 +23,5 @@ export type {
     OpeningHours, 
     DayHours 
 } from './ListingDetailPage';
+
+export { default as AdoptionDetailPage } from './AdoptionDetailPage';

@@ -232,7 +232,7 @@ export default function CommunityLayout({ children }: CommunityLayoutProps) {
   return (
     <div className="fixed inset-0 z-[1000] flex bg-[#101010] text-white font-open-sans flex-col sm:flex-row">
       {/* ── Left Sidebar ── */}
-      <aside className="w-full sm:w-[80px] lg:w-[260px] ml-1 sm:min-w-[80px] lg:min-w-[260px] h-auto sm:h-screen flex flex-row sm:flex-col pt-2.5 sm:pt-4 px-4 sm:px-2 lg:px-3 pb-2.5 sm:pb-6 border-t sm:border-t-0 border-white/10 bg-[#101010] order-2 sm:order-1 fixed sm:static bottom-0 left-0 right-0 z-[100] sm:z-auto overflow-y-visible sm:overflow-y-auto no-scrollbar">
+      <aside className="w-full sm:w-[80px] lg:w-[260px] ml-1 sm:min-w-[80px] lg:min-w-[260px] h-auto sm:h-screen flex flex-row sm:flex-col pt-2.5 sm:pt-4 px-4 sm:px-2 lg:px-3 pb-2.5 sm:pb-6 border-t sm:border-t-0 border-white/10 bg-[#101010] order-2 sm:order-1 fixed sm:static bottom-0 left-0 right-0 z-[100] sm:z-auto overflow-y-visible sm:overflow-y-auto scrollbar-hide">
         {/* Logo */}
         <div className="hidden sm:flex lg:pb-2.5 justify-center lg:justify-start">
           <Link
@@ -352,9 +352,12 @@ export default function CommunityLayout({ children }: CommunityLayoutProps) {
       </aside>
 
       {/* ── Main Content ── */}
-      <main className="flex-1 h-[calc(100vh-70px)] sm:h-screen overflow-y-auto order-1 sm:order-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
+      <main className="flex-1 h-[calc(100vh-70px)] sm:h-screen overflow-y-auto order-1 sm:order-2 scrollbar-hide">
         {children}
       </main>
+
+      {/* ── Right Spacer to center the feed on the screen ── */}
+      <div className="hidden sm:block lg:hidden xl:block sm:w-[80px] sm:min-w-[80px] xl:w-[260px] xl:min-w-[260px] order-3 pointer-events-none" />
 
       {/* ── New Thread Modal ── */}
       {showNewThread && (

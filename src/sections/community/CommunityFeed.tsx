@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ThreadCard, { Thread } from './ThreadCard';
+import ThreadFeedSkeleton from './ThreadSkeleton';
 
 /* ── Seed Data ── */
 const SEED_THREADS: Thread[] = [
@@ -11,6 +12,12 @@ const SEED_THREADS: Thread[] = [
     handle: 'rahulahmed',
     content:
       '🐾 Just adopted a golden retriever named Mango! He already owns the couch and my heart. Best decision of my life. #PetGo #GoldenRetriever',
+    images: [
+      'https://picsum.photos/seed/mango1/400/500',
+      'https://picsum.photos/seed/mango2/400/500',
+      'https://picsum.photos/seed/mango3/400/500',
+      'https://picsum.photos/seed/mango4/400/500'
+    ],
     likes: 2481,
     replies: 189,
     reposts: 172,
@@ -101,6 +108,54 @@ type FeedTab = 'foryou' | 'following';
 export default function CommunityFeed() {
   const [activeTab, setActiveTab] = useState<FeedTab>('foryou');
   const [threads, setThreads] = useState<Thread[]>(SEED_THREADS);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    // Collect all unique images from SEED_THREADS to preload
+    const imageUrls: string[] = [];
+    SEED_THREADS.forEach((t) => {
+      if (t.images) {
+        t.images.forEach((img) => {
+          if (!imageUrls.includes(img)) imageUrls.push(img);
+        });
+      }
+      if (t.image && !imageUrls.includes(t.image)) {
+        imageUrls.push(t.image);
+      }
+      if (t.avatar && !imageUrls.includes(t.avatar)) {
+        imageUrls.push(t.avatar);
+      }
+    });
+
+    const preloadAll = async () => {
+      // 1. Minimum 1.2s skeleton display duration to make it look smooth and deliberate
+      const delayPromise = new Promise((resolve) => setTimeout(resolve, 1200));
+
+      // 2. Preload images
+      const imagePromises = imageUrls.map((url) => {
+        return new Promise<void>((resolve) => {
+          const img = new Image();
+          img.src = url;
+          img.onload = () => resolve();
+          img.onerror = () => resolve(); // Resolve anyway to avoid blocking on bad URLs
+        });
+      });
+
+      await Promise.all([...imagePromises, delayPromise]);
+
+      if (isMounted) {
+        setIsLoading(false);
+      }
+    };
+
+    preloadAll();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleNewThread = (content: string) => {
     const newThread: Thread = {
@@ -133,16 +188,16 @@ export default function CommunityFeed() {
             className={`flex-1 py-3 px-4 bg-transparent border-none text-[15px] font-medium cursor-pointer relative transition-colors hover:text-[#ffe1bd] font-inherit ${activeTab === 'following' ? "text-[#ffe1bd] font-semibold after:content-[''] after:absolute after:-bottom-px after:left-6 after:right-6 after:h-[1px] after:bg-[#F7941D] after:rounded-t-sm" : 'text-white/40'}`}
             onClick={() => setActiveTab('following')}
           >
-            Following
+            Liked
           </button>
         </div>
       </div>
 
       {/* Main Feed Container */}
-      <div className="border border-white/20 rounded-3xl bg-[#101010] overflow-hidden mt-4">
+      <div className="border-1 border-white/4 rounded-3xl bg-[#181818]/70 backdrop-blur-2xl shadow-[0_8px_32px_rgba(255,255,255,0.022)] overflow-hidden mt-4">
         {/* What's new box */}
         <div
-          className="flex items-center gap-3 py-4 px-5 border-b border-white/20 cursor-text"
+          className="flex items-center gap-3 py-4 px-5 border-b border-white/5 cursor-text"
           onClick={() => document.getElementById('whats-new-input')?.focus()}
         >
           <div className="w-10 h-10 rounded-full bg-[#2a2a2a] flex items-center justify-center shrink-0 text-white">
@@ -179,14 +234,18 @@ export default function CommunityFeed() {
         </div>
 
         {/* Thread List */}
-        {threads.map((thread, i) => (
-          <ThreadCard
-            key={thread.id}
-            thread={thread}
-            index={i}
-            showLine={false}
-          />
-        ))}
+        {isLoading ? (
+          <ThreadFeedSkeleton />
+        ) : (
+          threads.map((thread, i) => (
+            <ThreadCard
+              key={thread.id}
+              thread={thread}
+              index={i}
+              showLine={false}
+            />
+          ))
+        )}
       </div>
     </div>
   );

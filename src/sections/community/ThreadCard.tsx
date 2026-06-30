@@ -363,19 +363,19 @@ export default function ThreadCard({
             </span>
           </button>
 
-          <button
+          {/* <button
             className={`flex items-center gap-1.5 bg-transparent border-none cursor-pointer py-1 px-1.5 rounded-lg text-sm transition-all font-inherit hover:bg-white/5 ${reposted ? 'text-[#00c37d] hover:bg-[#00c37d]/10' : 'text-white/50 hover:text-white/85'}`}
             onClick={handleRepost}
             aria-label={reposted ? 'Undo repost' : 'Repost'}
             id={`thread-repost-${thread.id}`}
           >
-            {/* <div className="w-5 h-5 shrink-0">
+            <div className="w-5 h-5 shrink-0">
               <RepostIcon active={reposted} />
-            </div> */}
-            {/* <span className="text-[13px] font-medium">
+            </div>
+            <span className="text-[13px] font-medium">
               {formatCount(reposts)}
-            </span> */}
-          </button>
+            </span>
+          </button> */}
 
           <button
             className="flex items-center gap-1.5 bg-transparent border-none text-white/50 cursor-pointer py-1 px-1.5 rounded-lg text-sm transition-all font-inherit hover:text-white/85 hover:bg-white/5"

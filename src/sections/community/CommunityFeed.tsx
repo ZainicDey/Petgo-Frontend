@@ -7,13 +7,19 @@ import SEED_THREADS from './threadData';
 
 type FeedTab = 'foryou' | 'following';
 
+let hasLoadedOnce = false;
+
 export default function CommunityFeed() {
   const [activeTab, setActiveTab] = useState<FeedTab>('foryou');
   const [threads, setThreads] = useState<Thread[]>(SEED_THREADS);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!hasLoadedOnce);
 
   useEffect(() => {
     let isMounted = true;
+
+    if (hasLoadedOnce) {
+      return;
+    }
 
     // Collect all unique images from SEED_THREADS to preload
     const imageUrls: string[] = [];
@@ -48,6 +54,7 @@ export default function CommunityFeed() {
       await Promise.all([...imagePromises, delayPromise]);
 
       if (isMounted) {
+        hasLoadedOnce = true;
         setIsLoading(false);
       }
     };

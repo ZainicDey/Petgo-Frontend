@@ -298,7 +298,7 @@ export default function CommunityLayout({ children }: CommunityLayoutProps) {
               <PlusIcon />
             </span>
             <span className="block sm:hidden lg:block leading-none tracking-tight">
-              New thread
+              New post
             </span>
           </button>
 

@@ -372,9 +372,9 @@ export default function ThreadCard({
             {/* <div className="w-5 h-5 shrink-0">
               <RepostIcon active={reposted} />
             </div> */}
-            <span className="text-[13px] font-medium">
+            {/* <span className="text-[13px] font-medium">
               {formatCount(reposts)}
-            </span>
+            </span> */}
           </button>
 
           <button

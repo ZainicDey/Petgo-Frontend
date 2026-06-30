@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Thread } from './ThreadCard';
 import { getThreadById } from './threadData';
-import CommunityLayout from './CommunityLayout';
 import {
   Carousel,
   CarouselContent,
@@ -262,17 +261,15 @@ export default function ThreadDetailPage({ threadId }: ThreadDetailPageProps) {
   /* 404-style fallback */
   if (!thread) {
     return (
-      <CommunityLayout>
-        <div className="max-w-[680px] mx-auto px-4 pt-20 text-center">
-          <p className="text-white/50 text-lg">Thread not found.</p>
-          <button
-            onClick={() => router.push('/community')}
-            className="mt-6 bg-white/10 border-none text-white cursor-pointer py-2.5 px-6 rounded-full text-sm font-medium transition-colors hover:bg-white/20 font-inherit"
-          >
-            Back to Community
-          </button>
-        </div>
-      </CommunityLayout>
+      <div className="max-w-[680px] mx-auto px-4 pt-20 text-center">
+        <p className="text-white/50 text-lg">Thread not found.</p>
+        <button
+          onClick={() => router.back()}
+          className="mt-6 bg-white/10 border-none text-white cursor-pointer py-2.5 px-6 rounded-full text-sm font-medium transition-colors hover:bg-white/20 font-inherit"
+        >
+          Back to Community
+        </button>
+      </div>
     );
   }
 
@@ -281,14 +278,13 @@ export default function ThreadDetailPage({ threadId }: ThreadDetailPageProps) {
   const viewCount = `${((thread.likes * 3.5 + thread.replies * 10) / 1000).toFixed(0)}K views`;
 
   return (
-    <CommunityLayout>
-      <div className="max-w-[680px] mx-auto px-4 pb-20">
+    <div className="max-w-[680px] mx-auto px-4 pb-20">
         {/* ─── Header ─── */}
         <div className="sticky top-0 z-10 bg-[#101010]/92 backdrop-blur-md pt-3 pb-3 mb-1">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button
-                onClick={() => router.push('/community')}
+                onClick={() => router.back()}
                 className="bg-transparent border-none text-white cursor-pointer p-2 rounded-full transition-colors hover:bg-white/10"
                 aria-label="Back"
               >
@@ -469,6 +465,5 @@ export default function ThreadDetailPage({ threadId }: ThreadDetailPageProps) {
           ))}
         </div>
       </div>
-    </CommunityLayout>
   );
 }

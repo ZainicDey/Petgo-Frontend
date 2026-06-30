@@ -368,7 +368,12 @@ export default function CommunityLayout({ children }: CommunityLayoutProps) {
 
       {/* ── New Thread Modal ── */}
       {showNewThread && (
-        <NewThreadModal onClose={() => setShowNewThread(false)} />
+        <NewThreadModal 
+          onClose={() => setShowNewThread(false)} 
+          onPost={(text) => {
+            window.dispatchEvent(new CustomEvent('community-new-post', { detail: text }));
+          }}
+        />
       )}
     </div>
   );

@@ -48,6 +48,10 @@ const SEED_THREADS: Thread[] = [
     handle: 'sinthiac',
     content:
       "PetGo's new vet-finder feature is a lifesaver! Found a great local vet in under 2 minutes for my rabbit, Biscuit. Highly recommend 🐰✨",
+    images: [
+      'https://picsum.photos/seed/biscuit1/400/400',
+      'https://picsum.photos/seed/biscuit2/400/400'
+    ],
     likes: 892,
     replies: 45,
     reposts: 113,

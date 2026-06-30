@@ -66,12 +66,12 @@ export default function CommunityFeed() {
     };
   }, []);
 
-  const handleNewThread = (content: string) => {
+  const handleNewThread = (text: string) => {
     const newThread: Thread = {
       id: Date.now().toString(),
       author: 'You',
       handle: 'you',
-      content,
+      content: text,
       likes: 0,
       replies: 0,
       reposts: 0,
@@ -79,6 +79,19 @@ export default function CommunityFeed() {
     };
     setThreads((prev) => [newThread, ...prev]);
   };
+
+  useEffect(() => {
+    const handleCustomPost = (e: Event) => {
+      const customEvent = e as CustomEvent<string>;
+      if (customEvent.detail) {
+        handleNewThread(customEvent.detail);
+      }
+    };
+    window.addEventListener('community-new-post', handleCustomPost);
+    return () => {
+      window.removeEventListener('community-new-post', handleCustomPost);
+    };
+  }, []);
 
   return (
     <div className="max-w-[680px] mx-auto px-4 pb-20">

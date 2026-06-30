@@ -43,6 +43,17 @@ export default function Navbar() {
               <li key={link.href}>
                 <Link
                   href={link.href}
+                  onClick={(e) => {
+                    if (link.href.startsWith('/#') && window.location.pathname === '/') {
+                      e.preventDefault();
+                      const hash = link.href.substring(1);
+                      const el = document.querySelector(hash);
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth' });
+                        window.history.pushState(null, '', hash);
+                      }
+                    }
+                  }}
                   className="relative text-[17px] font-normal leading-5 text-[#fdfdfde5] transition-colors duration-200 hover:text-[#ffe1bd] after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-0 after:bg-[#F7941D] after:transition-all after:duration-300 hover:after:w-full"
                 >
                   {link.label}
@@ -201,7 +212,18 @@ export default function Navbar() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  onClick={() => setMobileOpen(false)}
+                  onClick={(e) => {
+                    setMobileOpen(false);
+                    if (link.href.startsWith('/#') && window.location.pathname === '/') {
+                      e.preventDefault();
+                      const hash = link.href.substring(1);
+                      const el = document.querySelector(hash);
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth' });
+                        window.history.pushState(null, '', hash);
+                      }
+                    }
+                  }}
                   className="text-[15px] font-semibold text-gray-300 transition-colors duration-200 hover:text-white"
                 >
                   {link.label}

@@ -38,14 +38,27 @@ const InstagramIcon = () => (
   </svg>
 );
 
-const OutlineButton = ({ label, href }: { label: string; href: string }) => (
-  <Link
-    href={href}
-    className="h-[48px] px-6 rounded-full border border-white text-white flex items-center justify-center text-[16px] font-medium hover:bg-white/10 transition-colors"
-  >
-    {label}
-  </Link>
-);
+const OutlineButton = ({ label, href }: { label: string; href: string }) => {
+  return (
+    <Link
+      href={href}
+      onClick={(e) => {
+        if (href.startsWith('/#') && window.location.pathname === '/') {
+          e.preventDefault();
+          const hash = href.substring(1);
+          const el = document.querySelector(hash);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+            window.history.pushState(null, '', hash);
+          }
+        }
+      }}
+      className="h-[48px] px-6 rounded-full border border-white text-white flex items-center justify-center text-[16px] font-medium hover:bg-white/10 transition-colors"
+    >
+      {label}
+    </Link>
+  );
+};
 
 export default function Footer() {
   const bottomSectionRef = React.useRef<HTMLDivElement>(null);

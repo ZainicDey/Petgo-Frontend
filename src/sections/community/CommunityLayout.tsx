@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import PetGoLogo from '@/assets/images/Logo_PetGo.png';
 import NewThreadModal from './NewThreadModal';
 
 /* ── SVG Icons ── */
@@ -240,9 +242,14 @@ export default function CommunityLayout({ children }: CommunityLayoutProps) {
             className="inline-flex items-center hover:opacity-75 transition-opacity"
             aria-label="PetGo Community Home"
           >
-            <span className="hidden italic lg:block text-[30px] font-medium tracking-tight text-white select-none pl-3 font-sans">
-              petgo
-            </span>
+            <Image
+              src={PetGoLogo}
+              alt="PetGo"
+              width={100}
+              height={32}
+              className="hidden lg:block select-none pl-2"
+              priority
+            />
             <span className="text-2xl lg:hidden">🐾</span>
           </Link>
         </div>

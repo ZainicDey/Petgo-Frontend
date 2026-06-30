@@ -250,7 +250,10 @@ export default function ThreadCard({
         </div>
 
         {/* Content */}
-        <p className="text-base font-extralight leading-relaxed text-white/95 mb-2.5 break-words tracking-wide cursor-pointer">
+        <p
+          className="text-base font-extralight leading-relaxed text-white/95 mb-2.5 break-words tracking-wide cursor-pointer hover:text-white transition-colors"
+          onClick={() => router.push(`/community/thread/${thread.id}`)}
+        >
           {thread.content}
         </p>
 
@@ -350,6 +353,7 @@ export default function ThreadCard({
             className="flex items-center gap-1.5 bg-transparent border-none text-white/50 cursor-pointer py-1 px-1.5 rounded-lg text-sm transition-all font-inherit hover:text-white/85 hover:bg-white/5"
             aria-label="Reply"
             id={`thread-reply-${thread.id}`}
+            onClick={() => router.push(`/community/thread/${thread.id}`)}
           >
             <div className="w-5 h-5 shrink-0">
               <CommentIcon />
@@ -365,9 +369,9 @@ export default function ThreadCard({
             aria-label={reposted ? 'Undo repost' : 'Repost'}
             id={`thread-repost-${thread.id}`}
           >
-            <div className="w-5 h-5 shrink-0">
+            {/* <div className="w-5 h-5 shrink-0">
               <RepostIcon active={reposted} />
-            </div>
+            </div> */}
             <span className="text-[13px] font-medium">
               {formatCount(reposts)}
             </span>

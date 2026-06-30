@@ -109,10 +109,10 @@ export default function Footer() {
               <InstagramIcon />
             </Link>
 
-            <OutlineButton label="About Us" href="#" />
-            <OutlineButton label="Services" href="#" />
-            <OutlineButton label="Community" href="#" />
-            <OutlineButton label="Blog" href="#" />
+            <OutlineButton label="About Us" href="/#about-us" />
+            <OutlineButton label="Services" href="/#services" />
+            <OutlineButton label="Community" href="/community" />
+            {/* <OutlineButton label="Blog" href="#" /> */}
             {/* <Button
               label="Survey"
               href="#"

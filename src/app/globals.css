@@ -15,16 +15,21 @@
 body {
   background-color: var(--color-brand-bg);
   color: white;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 html {
-  overflow-x: hidden;
+  overflow-x: clip;
   scroll-behavior: smooth;
 }
 
 /* Prevent accidental text selection on headings during rapid button clicks */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   user-select: none;
 }
 
@@ -227,7 +232,6 @@ h1, h2, h3, h4, h5, h6 {
   animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-
 /* ── Hide scrollbar utility ── */
 .scrollbar-hide {
   -ms-overflow-style: none;
@@ -251,7 +255,7 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.04) 0px,
-    rgba(255, 255, 255, 0.10) 40px,
+    rgba(255, 255, 255, 0.1) 40px,
     rgba(255, 255, 255, 0.04) 80px
   );
   background-size: 400px 100%;
@@ -277,7 +281,6 @@ h1, h2, h3, h4, h5, h6 {
   :root {
     --nav-btn-width: 195px; /* narrower width as requested */
     --nav-btn-height: 33px; /* slightly taller height */
-    --nav-btn-font-size: 15px /* font size value */
+    --nav-btn-font-size: 15px /* font size value */;
   }
 }
-

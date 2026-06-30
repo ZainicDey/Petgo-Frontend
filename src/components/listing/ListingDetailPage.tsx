@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
+import React, {
+  useMemo,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import BookingModal from '@/components/listing/BookingModal';
@@ -264,35 +270,84 @@ const WhatsAppIcon = () => (
 /* ── Chevron Icons for Gallery ────────────────────────────────── */
 
 const ChevronLeftIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none">
-    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 20 20"
+    fill="none"
+  >
+    <path
+      d="M12.5 15L7.5 10L12.5 5"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
 const ChevronRightIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none">
-    <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 20 20"
+    fill="none"
+  >
+    <path
+      d="M7.5 15L12.5 10L7.5 5"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
 const RatingFullIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="17"
+    height="16"
+    viewBox="0 0 17 16"
+    fill="none"
+  >
     <g clipPath="url(#clip0_2003_1649)">
-      <path d="M16.8229 6.111H10.3969L8.41093 0L6.43994 8.083L8.41093 12.223L13.6109 16L11.6249 9.889L16.8229 6.111Z" fill="#E67136"/>
-      <path d="M6.426 6.111H0L5.2 9.888L3.213 16L8.413 12.223V0L6.426 6.111Z" fill="#E67136"/>
+      <path
+        d="M16.8229 6.111H10.3969L8.41093 0L6.43994 8.083L8.41093 12.223L13.6109 16L11.6249 9.889L16.8229 6.111Z"
+        fill="#E67136"
+      />
+      <path
+        d="M6.426 6.111H0L5.2 9.888L3.213 16L8.413 12.223V0L6.426 6.111Z"
+        fill="#E67136"
+      />
     </g>
     <defs>
       <clipPath id="clip0_2003_1649">
-        <rect width="16.823" height="16" fill="white"/>
+        <rect width="16.823" height="16" fill="white" />
       </clipPath>
     </defs>
   </svg>
 );
 
 const RatingHalfIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
-    <path d="M16.8229 6.111H10.3969L8.41093 0L6.43994 8.083L8.41093 12.223L13.6109 16L11.6249 9.889L16.8229 6.111Z" fill="#E67136" fillOpacity="0.5"/>
-    <path d="M6.426 6.111H0L5.2 9.888L3.213 16L8.413 12.223V0L6.426 6.111Z" fill="#E67136"/>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="17"
+    height="16"
+    viewBox="0 0 17 16"
+    fill="none"
+  >
+    <path
+      d="M16.8229 6.111H10.3969L8.41093 0L6.43994 8.083L8.41093 12.223L13.6109 16L11.6249 9.889L16.8229 6.111Z"
+      fill="#E67136"
+      fillOpacity="0.5"
+    />
+    <path
+      d="M6.426 6.111H0L5.2 9.888L3.213 16L8.413 12.223V0L6.426 6.111Z"
+      fill="#E67136"
+    />
   </svg>
 );
 
@@ -305,7 +360,7 @@ function ImageGallery({ images, name }: { images: string[]; name: string }) {
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
   const hasMultiple = images.length > 1;
 
-  // Auto-advance every 10 seconds
+  // Auto-advance every 2 seconds
   const resetTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
     if (!hasMultiple) return;
@@ -315,7 +370,7 @@ function ImageGallery({ images, name }: { images: string[]; name: string }) {
         setActiveIndex((prev) => (prev + 1) % images.length);
         setIsTransitioning(false);
       }, 300);
-    }, 10000);
+    }, 3000);
   }, [hasMultiple, images.length]);
 
   useEffect(() => {
@@ -351,8 +406,12 @@ function ImageGallery({ images, name }: { images: string[]; name: string }) {
     if (!thumbnailContainerRef.current || !hasMultiple) return;
     const container = thumbnailContainerRef.current;
     const thumb = container.children[activeIndex] as HTMLElement | undefined;
-    if (thumb) {
-      thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    if (thumb && container) {
+      const scrollLeft = thumb.offsetLeft - container.offsetWidth / 2 + thumb.offsetWidth / 2;
+      container.scrollTo({
+        left: scrollLeft,
+        behavior: 'smooth',
+      });
     }
   }, [activeIndex, hasMultiple]);
 
@@ -593,7 +652,7 @@ export default function ListingDetailPage({
     .join(', ');
 
   return (
-    <section className="relative min-h-screen overflow-hidden font-[family-name:var(--font-opensans)]">
+    <section className="relative min-h-screen font-[family-name:var(--font-opensans)]">
       {/* ── Background Rectangle ── */}
       <div className="absolute -top-15 inset-x-0 z-0 flex justify-center pointer-events-none mt-9 opacity-95">
         <div
@@ -622,19 +681,29 @@ export default function ListingDetailPage({
             {/* Hero Image / Gallery */}
             {(() => {
               // Build the gallery image list: prefer `images` array, fall back to single `image`
-              const galleryImages = data.images && data.images.length > 0
-                ? data.images
-                : data.image
-                  ? [data.image]
-                  : [];
+              const galleryImages =
+                data.images && data.images.length > 0
+                  ? data.images
+                  : data.image
+                    ? [data.image]
+                    : [];
 
               if (galleryImages.length === 0) {
                 // No images — show placeholder
                 return (
                   <div className="relative w-full h-[300px] md:h-[430px] rounded-2xl overflow-hidden bg-[#1A1A1D] border border-[#2a2a2d]">
                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-[#1a1a1d] to-[#222228]">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none">
-                        <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM13.96 12.29L11.21 15.83L9.25 13.47L6.5 17H17.5L13.96 12.29Z" fill="#3a3a3d" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="64"
+                        height="64"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <path
+                          d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM13.96 12.29L11.21 15.83L9.25 13.47L6.5 17H17.5L13.96 12.29Z"
+                          fill="#3a3a3d"
+                        />
                       </svg>
                       <span className="text-white/20 text-sm">{data.name}</span>
                     </div>
@@ -700,7 +769,9 @@ export default function ListingDetailPage({
                   Reviews
                 </h2>
                 <div className="flex items-center gap-2">
-                  <span className="text-white font-[Gabarito] text-[18px] font-semibold">4.6</span>
+                  <span className="text-white font-[Gabarito] text-[18px] font-semibold">
+                    4.6
+                  </span>
                   <div className="flex items-center gap-1">
                     <RatingFullIcon />
                     <RatingFullIcon />
@@ -708,7 +779,9 @@ export default function ListingDetailPage({
                     <RatingFullIcon />
                     <RatingHalfIcon />
                   </div>
-                  <span className="text-white/40 text-[14px] font-['Open_Sans']">(34 Reviews)</span>
+                  <span className="text-white/40 text-[14px] font-['Open_Sans']">
+                    (34 Reviews)
+                  </span>
                 </div>
               </div>
 
@@ -736,7 +809,13 @@ export default function ListingDetailPage({
                       </div>
                     </div>
                     <p className="text-[#a0a0a0] font-['Open_Sans'] text-[15px] leading-[1.6]">
-                      I've never heard of this clinic, but was fortunate enough to receive a voucher for my pup's spay and they took the voucher and had the availability. The staff were very friendly and helpful in making sure I understood everything that was going to happen. The prices are relatively reasonable. They are efficient and the space itself is clean and open.
+                      I've never heard of this clinic, but was fortunate enough
+                      to receive a voucher for my pup's spay and they took the
+                      voucher and had the availability. The staff were very
+                      friendly and helpful in making sure I understood
+                      everything that was going to happen. The prices are
+                      relatively reasonable. They are efficient and the space
+                      itself is clean and open.
                     </p>
                   </div>
                 ))}
@@ -759,14 +838,14 @@ export default function ListingDetailPage({
           </div>
 
           {/* ── RIGHT COLUMN — Sticky Info Panel ── */}
-          <div className="w-full lg:w-[340px] xl:w-[440px] shrink-0">
+          <div className="w-full lg:w-[340px] xl:w-[440px] shrink-0 lg:sticky lg:top-1">
             <div
               style={{
                 borderRadius: '18px',
                 border: '1px solid rgba(255, 240, 222, 0.1)',
                 background: 'rgba(255, 240, 222, 0.05)',
               }}
-              className="lg:sticky lg:top-24 overflow-hidden"
+              className="overflow-hidden"
             >
               {/* Panel header gradient stripe */}
               {/* <div className="h-1.5 w-full bg-linear-to-r from-[#F7941D]/60 via-[#F7941D] to-[#F7941D]/60" /> */}

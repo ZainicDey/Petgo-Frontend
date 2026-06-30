@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import type { ListingData } from './ListingCard';
 
@@ -139,30 +139,76 @@ const WhatsappIcon = () => (
 );
 
 const EyeIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+  >
     <mask id="path-1-inside-1_2042_4754" fill="white">
-      <path d="M18.267 9.66665C16.5836 5.75831 13.417 3.33331 10.0003 3.33331C6.58363 3.33331 3.41697 5.75831 1.73363 9.66665C1.68775 9.77178 1.66406 9.88526 1.66406 9.99998C1.66406 10.1147 1.68775 10.2282 1.73363 10.3333C3.41697 14.2416 6.58363 16.6666 10.0003 16.6666C13.417 16.6666 16.5836 14.2416 18.267 10.3333C18.3129 10.2282 18.3365 10.1147 18.3365 9.99998C18.3365 9.88526 18.3129 9.77178 18.267 9.66665ZM10.0003 15C7.35863 15 4.85863 13.0916 3.41697 9.99998C4.85863 6.90831 7.35863 4.99998 10.0003 4.99998C12.642 4.99998 15.142 6.90831 16.5836 9.99998C15.142 13.0916 12.642 15 10.0003 15ZM10.0003 6.66665C9.34103 6.66665 8.69656 6.86214 8.1484 7.22841C7.60024 7.59469 7.17299 8.11528 6.9207 8.72437C6.66841 9.33345 6.6024 10.0037 6.73102 10.6503C6.85963 11.2969 7.1771 11.8908 7.64328 12.357C8.10945 12.8232 8.7034 13.1406 9.35 13.2693C9.9966 13.3979 10.6668 13.3319 11.2759 13.0796C11.885 12.8273 12.4056 12.4 12.7719 11.8519C13.1381 11.3037 13.3336 10.6593 13.3336 9.99998C13.3336 9.11592 12.9824 8.26808 12.3573 7.64296C11.7322 7.01784 10.8844 6.66665 10.0003 6.66665ZM10.0003 11.6666C9.67066 11.6666 9.34843 11.5689 9.07435 11.3858C8.80027 11.2026 8.58665 10.9423 8.4605 10.6378C8.33435 10.3332 8.30135 9.99813 8.36566 9.67483C8.42997 9.35153 8.5887 9.05456 8.82179 8.82147C9.05488 8.58838 9.35185 8.42965 9.67515 8.36534C9.99845 8.30103 10.3336 8.33403 10.6381 8.46018C10.9426 8.58633 11.2029 8.79995 11.3861 9.07403C11.5692 9.34811 11.667 9.67034 11.667 9.99998C11.667 10.442 11.4914 10.8659 11.1788 11.1785C10.8663 11.4911 10.4423 11.6666 10.0003 11.6666Z"/>
+      <path d="M18.267 9.66665C16.5836 5.75831 13.417 3.33331 10.0003 3.33331C6.58363 3.33331 3.41697 5.75831 1.73363 9.66665C1.68775 9.77178 1.66406 9.88526 1.66406 9.99998C1.66406 10.1147 1.68775 10.2282 1.73363 10.3333C3.41697 14.2416 6.58363 16.6666 10.0003 16.6666C13.417 16.6666 16.5836 14.2416 18.267 10.3333C18.3129 10.2282 18.3365 10.1147 18.3365 9.99998C18.3365 9.88526 18.3129 9.77178 18.267 9.66665ZM10.0003 15C7.35863 15 4.85863 13.0916 3.41697 9.99998C4.85863 6.90831 7.35863 4.99998 10.0003 4.99998C12.642 4.99998 15.142 6.90831 16.5836 9.99998C15.142 13.0916 12.642 15 10.0003 15ZM10.0003 6.66665C9.34103 6.66665 8.69656 6.86214 8.1484 7.22841C7.60024 7.59469 7.17299 8.11528 6.9207 8.72437C6.66841 9.33345 6.6024 10.0037 6.73102 10.6503C6.85963 11.2969 7.1771 11.8908 7.64328 12.357C8.10945 12.8232 8.7034 13.1406 9.35 13.2693C9.9966 13.3979 10.6668 13.3319 11.2759 13.0796C11.885 12.8273 12.4056 12.4 12.7719 11.8519C13.1381 11.3037 13.3336 10.6593 13.3336 9.99998C13.3336 9.11592 12.9824 8.26808 12.3573 7.64296C11.7322 7.01784 10.8844 6.66665 10.0003 6.66665ZM10.0003 11.6666C9.67066 11.6666 9.34843 11.5689 9.07435 11.3858C8.80027 11.2026 8.58665 10.9423 8.4605 10.6378C8.33435 10.3332 8.30135 9.99813 8.36566 9.67483C8.42997 9.35153 8.5887 9.05456 8.82179 8.82147C9.05488 8.58838 9.35185 8.42965 9.67515 8.36534C9.99845 8.30103 10.3336 8.33403 10.6381 8.46018C10.9426 8.58633 11.2029 8.79995 11.3861 9.07403C11.5692 9.34811 11.667 9.67034 11.667 9.99998C11.667 10.442 11.4914 10.8659 11.1788 11.1785C10.8663 11.4911 10.4423 11.6666 10.0003 11.6666Z" />
     </mask>
-    <path d="M1.73363 9.66665L3.56668 10.4667L3.5705 10.4578L1.73363 9.66665ZM1.66406 9.99998H-0.335938H1.66406ZM1.73363 10.3333L3.57052 9.54216L3.56666 9.53331L1.73363 10.3333ZM18.267 10.3333L16.4339 9.5333L16.4301 9.54217L18.267 10.3333ZM3.41697 9.99998L1.60435 9.15474L1.21021 9.99998L1.60435 10.8452L3.41697 9.99998ZM16.5836 9.99998L18.3962 10.8452L18.7904 9.99998L18.3962 9.15474L16.5836 9.99998ZM13.3336 9.99998H15.3336H13.3336ZM9.07435 11.3858L7.96321 13.0487L9.07435 11.3858ZM18.267 9.66665L20.1038 8.8755C18.1998 4.45484 14.4318 1.33331 10.0003 1.33331V3.33331V5.33331C12.4022 5.33331 14.9674 7.06179 16.4301 10.4578L18.267 9.66665ZM10.0003 3.33331V1.33331C5.56885 1.33331 1.80076 4.45484 -0.103236 8.8755L1.73363 9.66665L3.5705 10.4578C5.03317 7.06179 7.59842 5.33331 10.0003 5.33331V3.33331ZM1.73363 9.66665L-0.0993972 8.86665C-0.25541 9.22412 -0.335938 9.60995 -0.335938 9.99998H1.66406H3.66406C3.66406 10.1606 3.6309 10.3195 3.56666 10.4666L1.73363 9.66665ZM1.66406 9.99998H-0.335938C-0.335938 10.39 -0.25541 10.7758 -0.0993972 11.1333L1.73363 10.3333L3.56666 9.53331C3.6309 9.68051 3.66406 9.83938 3.66406 9.99998H1.66406ZM1.73363 10.3333L-0.103236 11.1245C1.80076 15.5451 5.56885 18.6666 10.0003 18.6666V16.6666V14.6666C7.59842 14.6666 5.03317 12.9382 3.5705 9.54217L1.73363 10.3333ZM10.0003 16.6666V18.6666C14.4318 18.6666 18.1998 15.5451 20.1038 11.1245L18.267 10.3333L16.4301 9.54217C14.9674 12.9382 12.4022 14.6666 10.0003 14.6666V16.6666ZM18.267 10.3333L20.1 11.1333C20.256 10.7758 20.3365 10.39 20.3365 9.99998H18.3365H16.3365C16.3365 9.83938 16.3697 9.68051 16.4339 9.53331L18.267 10.3333ZM18.3365 9.99998H20.3365C20.3365 9.60995 20.256 9.22412 20.1 8.86665L18.267 9.66665L16.4339 10.4666C16.3697 10.3195 16.3365 10.1606 16.3365 9.99998H18.3365ZM10.0003 15V13C8.38091 13 6.46075 11.795 5.22958 9.15474L3.41697 9.99998L1.60435 10.8452C3.25652 14.3883 6.33636 17 10.0003 17V15ZM3.41697 9.99998L5.22958 10.8452C6.46075 8.20497 8.38091 6.99998 10.0003 6.99998V4.99998V2.99998C6.33636 2.99998 3.25652 5.61165 1.60435 9.15474L3.41697 9.99998ZM10.0003 4.99998V6.99998C11.6197 6.99998 13.5399 8.20497 14.771 10.8452L16.5836 9.99998L18.3962 9.15474C16.7441 5.61165 13.6642 2.99998 10.0003 2.99998V4.99998ZM16.5836 9.99998L14.771 9.15474C13.5399 11.795 11.6197 13 10.0003 13V15V17C13.6642 17 16.7441 14.3883 18.3962 10.8452L16.5836 9.99998ZM10.0003 6.66665V4.66665C8.94547 4.66665 7.91432 4.97944 7.03726 5.56548L8.1484 7.22841L9.25954 8.89135C9.47881 8.74484 9.73659 8.66665 10.0003 8.66665V6.66665ZM8.1484 7.22841L7.03726 5.56548C6.1602 6.15151 5.47661 6.98446 5.07294 7.959L6.9207 8.72437L8.76846 9.48973C8.86938 9.2461 9.04027 9.03786 9.25954 8.89135L8.1484 7.22841ZM6.9207 8.72437L5.07294 7.959C4.66927 8.93354 4.56366 10.0059 4.76944 11.0405L6.73102 10.6503L8.69259 10.2601C8.64114 10.0015 8.66754 9.73337 8.76846 9.48973L6.9207 8.72437ZM6.73102 10.6503L4.76944 11.0405C4.97523 12.075 5.48318 13.0253 6.22906 13.7712L7.64328 12.357L9.05749 10.9428C8.87102 10.7563 8.74403 10.5187 8.69259 10.2601L6.73102 10.6503ZM7.64328 12.357L6.22906 13.7712C6.97494 14.5171 7.92525 15.025 8.95982 15.2308L9.35 13.2693L9.74018 11.3077C9.48154 11.2562 9.24396 11.1293 9.05749 10.9428L7.64328 12.357ZM9.35 13.2693L8.95982 15.2308C9.99438 15.4366 11.0667 15.331 12.0413 14.9273L11.2759 13.0796L10.5105 11.2318C10.2669 11.3327 9.99882 11.3591 9.74018 11.3077L9.35 13.2693ZM11.2759 13.0796L12.0413 14.9273C13.0158 14.5237 13.8488 13.8401 14.4348 12.963L12.7719 11.8519L11.1089 10.7407C10.9624 10.96 10.7542 11.1309 10.5105 11.2318L11.2759 13.0796ZM12.7719 11.8519L14.4348 12.963C15.0208 12.086 15.3336 11.0548 15.3336 9.99998H13.3336H11.3336C11.3336 10.2637 11.2554 10.5215 11.1089 10.7407L12.7719 11.8519ZM13.3336 9.99998H15.3336C15.3336 8.58549 14.7717 7.22894 13.7715 6.22874L12.3573 7.64296L10.9431 9.05717C11.1932 9.30722 11.3336 9.64636 11.3336 9.99998H13.3336ZM12.3573 7.64296L13.7715 6.22874C12.7713 5.22855 11.4148 4.66665 10.0003 4.66665V6.66665V8.66665C10.3539 8.66665 10.6931 8.80712 10.9431 9.05717L12.3573 7.64296ZM10.0003 11.6666V9.66665C10.0662 9.66665 10.1307 9.6862 10.1855 9.72282L9.07435 11.3858L7.96321 13.0487C8.56619 13.4516 9.2751 13.6666 10.0003 13.6666V11.6666ZM9.07435 11.3858L10.1855 9.72282C10.2403 9.75945 10.283 9.81151 10.3083 9.87242L8.4605 10.6378L6.61274 11.4032C6.89026 12.0731 7.36023 12.6458 7.96321 13.0487L9.07435 11.3858ZM8.4605 10.6378L10.3083 9.87242C10.3335 9.93333 10.3401 10.0003 10.3272 10.065L8.36566 9.67483L6.40409 9.28465C6.26261 9.99591 6.33522 10.7332 6.61274 11.4032L8.4605 10.6378ZM8.36566 9.67483L10.3272 10.065C10.3144 10.1297 10.2826 10.1891 10.236 10.2357L8.82179 8.82147L7.40758 7.40726C6.89478 7.92005 6.54557 8.57338 6.40409 9.28465L8.36566 9.67483ZM8.82179 8.82147L10.236 10.2357C10.1894 10.2823 10.13 10.314 10.0653 10.3269L9.67515 8.36534L9.28497 6.40377C8.5737 6.54525 7.92037 6.89446 7.40758 7.40726L8.82179 8.82147ZM9.67515 8.36534L10.0653 10.3269C10.0007 10.3398 9.93365 10.3332 9.87274 10.3079L10.6381 8.46018L11.4035 6.61242C10.7335 6.3349 9.99623 6.26229 9.28497 6.40377L9.67515 8.36534ZM10.6381 8.46018L9.87274 10.3079C9.81183 10.2827 9.75977 10.24 9.72314 10.1852L11.3861 9.07403L13.049 7.96289C12.6461 7.35991 12.0735 6.88994 11.4035 6.61242L10.6381 8.46018ZM11.3861 9.07403L9.72314 10.1852C9.68652 10.1304 9.66697 10.0659 9.66697 9.99998H11.667H13.667C13.667 9.27478 13.4519 8.56587 13.049 7.96289L11.3861 9.07403ZM11.667 9.99998H9.66697C9.66697 9.91157 9.70209 9.82679 9.7646 9.76428L11.1788 11.1785L12.593 12.5927C13.2807 11.9051 13.667 10.9724 13.667 9.99998H11.667ZM11.1788 11.1785L9.7646 9.76428C9.82711 9.70177 9.91189 9.66665 10.0003 9.66665V11.6666V13.6666C10.9728 13.6666 11.9054 13.2803 12.593 12.5927L11.1788 11.1785Z" fill="white" mask="url(#path-1-inside-1_2042_4754)"/>
+    <path
+      d="M1.73363 9.66665L3.56668 10.4667L3.5705 10.4578L1.73363 9.66665ZM1.66406 9.99998H-0.335938H1.66406ZM1.73363 10.3333L3.57052 9.54216L3.56666 9.53331L1.73363 10.3333ZM18.267 10.3333L16.4339 9.5333L16.4301 9.54217L18.267 10.3333ZM3.41697 9.99998L1.60435 9.15474L1.21021 9.99998L1.60435 10.8452L3.41697 9.99998ZM16.5836 9.99998L18.3962 10.8452L18.7904 9.99998L18.3962 9.15474L16.5836 9.99998ZM13.3336 9.99998H15.3336H13.3336ZM9.07435 11.3858L7.96321 13.0487L9.07435 11.3858ZM18.267 9.66665L20.1038 8.8755C18.1998 4.45484 14.4318 1.33331 10.0003 1.33331V3.33331V5.33331C12.4022 5.33331 14.9674 7.06179 16.4301 10.4578L18.267 9.66665ZM10.0003 3.33331V1.33331C5.56885 1.33331 1.80076 4.45484 -0.103236 8.8755L1.73363 9.66665L3.5705 10.4578C5.03317 7.06179 7.59842 5.33331 10.0003 5.33331V3.33331ZM1.73363 9.66665L-0.0993972 8.86665C-0.25541 9.22412 -0.335938 9.60995 -0.335938 9.99998H1.66406H3.66406C3.66406 10.1606 3.6309 10.3195 3.56666 10.4666L1.73363 9.66665ZM1.66406 9.99998H-0.335938C-0.335938 10.39 -0.25541 10.7758 -0.0993972 11.1333L1.73363 10.3333L3.56666 9.53331C3.6309 9.68051 3.66406 9.83938 3.66406 9.99998H1.66406ZM1.73363 10.3333L-0.103236 11.1245C1.80076 15.5451 5.56885 18.6666 10.0003 18.6666V16.6666V14.6666C7.59842 14.6666 5.03317 12.9382 3.5705 9.54217L1.73363 10.3333ZM10.0003 16.6666V18.6666C14.4318 18.6666 18.1998 15.5451 20.1038 11.1245L18.267 10.3333L16.4301 9.54217C14.9674 12.9382 12.4022 14.6666 10.0003 14.6666V16.6666ZM18.267 10.3333L20.1 11.1333C20.256 10.7758 20.3365 10.39 20.3365 9.99998H18.3365H16.3365C16.3365 9.83938 16.3697 9.68051 16.4339 9.53331L18.267 10.3333ZM18.3365 9.99998H20.3365C20.3365 9.60995 20.256 9.22412 20.1 8.86665L18.267 9.66665L16.4339 10.4666C16.3697 10.3195 16.3365 10.1606 16.3365 9.99998H18.3365ZM10.0003 15V13C8.38091 13 6.46075 11.795 5.22958 9.15474L3.41697 9.99998L1.60435 10.8452C3.25652 14.3883 6.33636 17 10.0003 17V15ZM3.41697 9.99998L5.22958 10.8452C6.46075 8.20497 8.38091 6.99998 10.0003 6.99998V4.99998V2.99998C6.33636 2.99998 3.25652 5.61165 1.60435 9.15474L3.41697 9.99998ZM10.0003 4.99998V6.99998C11.6197 6.99998 13.5399 8.20497 14.771 10.8452L16.5836 9.99998L18.3962 9.15474C16.7441 5.61165 13.6642 2.99998 10.0003 2.99998V4.99998ZM16.5836 9.99998L14.771 9.15474C13.5399 11.795 11.6197 13 10.0003 13V15V17C13.6642 17 16.7441 14.3883 18.3962 10.8452L16.5836 9.99998ZM10.0003 6.66665V4.66665C8.94547 4.66665 7.91432 4.97944 7.03726 5.56548L8.1484 7.22841L9.25954 8.89135C9.47881 8.74484 9.73659 8.66665 10.0003 8.66665V6.66665ZM8.1484 7.22841L7.03726 5.56548C6.1602 6.15151 5.47661 6.98446 5.07294 7.959L6.9207 8.72437L8.76846 9.48973C8.86938 9.2461 9.04027 9.03786 9.25954 8.89135L8.1484 7.22841ZM6.9207 8.72437L5.07294 7.959C4.66927 8.93354 4.56366 10.0059 4.76944 11.0405L6.73102 10.6503L8.69259 10.2601C8.64114 10.0015 8.66754 9.73337 8.76846 9.48973L6.9207 8.72437ZM6.73102 10.6503L4.76944 11.0405C4.97523 12.075 5.48318 13.0253 6.22906 13.7712L7.64328 12.357L9.05749 10.9428C8.87102 10.7563 8.74403 10.5187 8.69259 10.2601L6.73102 10.6503ZM7.64328 12.357L6.22906 13.7712C6.97494 14.5171 7.92525 15.025 8.95982 15.2308L9.35 13.2693L9.74018 11.3077C9.48154 11.2562 9.24396 11.1293 9.05749 10.9428L7.64328 12.357ZM9.35 13.2693L8.95982 15.2308C9.99438 15.4366 11.0667 15.331 12.0413 14.9273L11.2759 13.0796L10.5105 11.2318C10.2669 11.3327 9.99882 11.3591 9.74018 11.3077L9.35 13.2693ZM11.2759 13.0796L12.0413 14.9273C13.0158 14.5237 13.8488 13.8401 14.4348 12.963L12.7719 11.8519L11.1089 10.7407C10.9624 10.96 10.7542 11.1309 10.5105 11.2318L11.2759 13.0796ZM12.7719 11.8519L14.4348 12.963C15.0208 12.086 15.3336 11.0548 15.3336 9.99998H13.3336H11.3336C11.3336 10.2637 11.2554 10.5215 11.1089 10.7407L12.7719 11.8519ZM13.3336 9.99998H15.3336C15.3336 8.58549 14.7717 7.22894 13.7715 6.22874L12.3573 7.64296L10.9431 9.05717C11.1932 9.30722 11.3336 9.64636 11.3336 9.99998H13.3336ZM12.3573 7.64296L13.7715 6.22874C12.7713 5.22855 11.4148 4.66665 10.0003 4.66665V6.66665V8.66665C10.3539 8.66665 10.6931 8.80712 10.9431 9.05717L12.3573 7.64296ZM10.0003 11.6666V9.66665C10.0662 9.66665 10.1307 9.6862 10.1855 9.72282L9.07435 11.3858L7.96321 13.0487C8.56619 13.4516 9.2751 13.6666 10.0003 13.6666V11.6666ZM9.07435 11.3858L10.1855 9.72282C10.2403 9.75945 10.283 9.81151 10.3083 9.87242L8.4605 10.6378L6.61274 11.4032C6.89026 12.0731 7.36023 12.6458 7.96321 13.0487L9.07435 11.3858ZM8.4605 10.6378L10.3083 9.87242C10.3335 9.93333 10.3401 10.0003 10.3272 10.065L8.36566 9.67483L6.40409 9.28465C6.26261 9.99591 6.33522 10.7332 6.61274 11.4032L8.4605 10.6378ZM8.36566 9.67483L10.3272 10.065C10.3144 10.1297 10.2826 10.1891 10.236 10.2357L8.82179 8.82147L7.40758 7.40726C6.89478 7.92005 6.54557 8.57338 6.40409 9.28465L8.36566 9.67483ZM8.82179 8.82147L10.236 10.2357C10.1894 10.2823 10.13 10.314 10.0653 10.3269L9.67515 8.36534L9.28497 6.40377C8.5737 6.54525 7.92037 6.89446 7.40758 7.40726L8.82179 8.82147ZM9.67515 8.36534L10.0653 10.3269C10.0007 10.3398 9.93365 10.3332 9.87274 10.3079L10.6381 8.46018L11.4035 6.61242C10.7335 6.3349 9.99623 6.26229 9.28497 6.40377L9.67515 8.36534ZM10.6381 8.46018L9.87274 10.3079C9.81183 10.2827 9.75977 10.24 9.72314 10.1852L11.3861 9.07403L13.049 7.96289C12.6461 7.35991 12.0735 6.88994 11.4035 6.61242L10.6381 8.46018ZM11.3861 9.07403L9.72314 10.1852C9.68652 10.1304 9.66697 10.0659 9.66697 9.99998H11.667H13.667C13.667 9.27478 13.4519 8.56587 13.049 7.96289L11.3861 9.07403ZM11.667 9.99998H9.66697C9.66697 9.91157 9.70209 9.82679 9.7646 9.76428L11.1788 11.1785L12.593 12.5927C13.2807 11.9051 13.667 10.9724 13.667 9.99998H11.667ZM11.1788 11.1785L9.7646 9.76428C9.82711 9.70177 9.91189 9.66665 10.0003 9.66665V11.6666V13.6666C10.9728 13.6666 11.9054 13.2803 12.593 12.5927L11.1788 11.1785Z"
+      fill="white"
+      mask="url(#path-1-inside-1_2042_4754)"
+    />
   </svg>
 );
 
 const InfoRedIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#BE1E2D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M12 16V12" stroke="#BE1E2D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M12 8H12.01" stroke="#BE1E2D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+  >
+    <path
+      d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+      stroke="#BE1E2D"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M12 16V12"
+      stroke="#BE1E2D"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M12 8H12.01"
+      stroke="#BE1E2D"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
 const PhoneCallOutlineIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+  >
     <g clipPath="url(#clip_phone_outline)">
-      <path d="M12.5415 4.16671C13.3555 4.32551 14.1035 4.72359 14.6899 5.30999C15.2763 5.89639 15.6744 6.64443 15.8332 7.45837M12.5415 0.833374C14.2326 1.02124 15.8095 1.77852 17.0134 2.98088C18.2173 4.18324 18.9765 5.75922 19.1665 7.45004M18.3332 14.1V16.6C18.3341 16.8321 18.2866 17.0618 18.1936 17.2745C18.1006 17.4871 17.9643 17.678 17.7933 17.8349C17.6222 17.9918 17.4203 18.1113 17.2005 18.1856C16.9806 18.26 16.7477 18.2876 16.5165 18.2667C13.9522 17.9881 11.489 17.1118 9.32486 15.7084C7.31139 14.4289 5.60431 12.7219 4.32486 10.7084C2.91651 8.53438 2.04007 6.0592 1.76653 3.48337C1.7457 3.25293 1.77309 3.02067 1.84695 2.80139C1.9208 2.58211 2.03951 2.38061 2.1955 2.20972C2.3515 2.03883 2.54137 1.9023 2.75302 1.80881C2.96468 1.71532 3.19348 1.66693 3.42486 1.66671H5.92486C6.32928 1.66273 6.72136 1.80594 7.028 2.06965C7.33464 2.33336 7.53493 2.69958 7.59153 3.10004C7.69705 3.9001 7.89274 4.68565 8.17486 5.44171C8.28698 5.73998 8.31125 6.06414 8.24478 6.37577C8.17832 6.68741 8.02392 6.97347 7.79986 7.20004L6.74153 8.25837C7.92783 10.3447 9.65524 12.0721 11.7415 13.2584L12.7999 12.2C13.0264 11.976 13.3125 11.8216 13.6241 11.7551C13.9358 11.6887 14.2599 11.7129 14.5582 11.825C15.3143 12.1072 16.0998 12.3029 16.8999 12.4084C17.3047 12.4655 17.6744 12.6694 17.9386 12.9813C18.2029 13.2932 18.3433 13.6914 18.3332 14.1Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path
+        d="M12.5415 4.16671C13.3555 4.32551 14.1035 4.72359 14.6899 5.30999C15.2763 5.89639 15.6744 6.64443 15.8332 7.45837M12.5415 0.833374C14.2326 1.02124 15.8095 1.77852 17.0134 2.98088C18.2173 4.18324 18.9765 5.75922 19.1665 7.45004M18.3332 14.1V16.6C18.3341 16.8321 18.2866 17.0618 18.1936 17.2745C18.1006 17.4871 17.9643 17.678 17.7933 17.8349C17.6222 17.9918 17.4203 18.1113 17.2005 18.1856C16.9806 18.26 16.7477 18.2876 16.5165 18.2667C13.9522 17.9881 11.489 17.1118 9.32486 15.7084C7.31139 14.4289 5.60431 12.7219 4.32486 10.7084C2.91651 8.53438 2.04007 6.0592 1.76653 3.48337C1.7457 3.25293 1.77309 3.02067 1.84695 2.80139C1.9208 2.58211 2.03951 2.38061 2.1955 2.20972C2.3515 2.03883 2.54137 1.9023 2.75302 1.80881C2.96468 1.71532 3.19348 1.66693 3.42486 1.66671H5.92486C6.32928 1.66273 6.72136 1.80594 7.028 2.06965C7.33464 2.33336 7.53493 2.69958 7.59153 3.10004C7.69705 3.9001 7.89274 4.68565 8.17486 5.44171C8.28698 5.73998 8.31125 6.06414 8.24478 6.37577C8.17832 6.68741 8.02392 6.97347 7.79986 7.20004L6.74153 8.25837C7.92783 10.3447 9.65524 12.0721 11.7415 13.2584L12.7999 12.2C13.0264 11.976 13.3125 11.8216 13.6241 11.7551C13.9358 11.6887 14.2599 11.7129 14.5582 11.825C15.3143 12.1072 16.0998 12.3029 16.8999 12.4084C17.3047 12.4655 17.6744 12.6694 17.9386 12.9813C18.2029 13.2932 18.3433 13.6914 18.3332 14.1Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </g>
     <defs>
       <clipPath id="clip_phone_outline">
-        <rect width="20" height="20" fill="white"/>
+        <rect width="20" height="20" fill="white" />
       </clipPath>
     </defs>
   </svg>
@@ -187,9 +233,9 @@ interface ModalCardPreviewProps {
 
 function ModalCardPreview({ item }: ModalCardPreviewProps) {
   const tags = item.tags ? item.tags.slice(0, 3) : [];
-  const locationText = item.street 
-    ? `${item.street}, ${item.area || ''}, ${item.city || ''}` 
-    : (item.area || 'Location not specified');
+  const locationText = item.street
+    ? `${item.street}, ${item.area || ''}, ${item.city || ''}`
+    : item.area || 'Location not specified';
 
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl bg-[#1A1A1D] border border-[#2a2a2d] w-full">
@@ -239,11 +285,13 @@ function ModalCardPreview({ item }: ModalCardPreviewProps) {
         <div className="flex items-center gap-2 text-[#D1D5DC] font-[family-name:var(--font-opensans)] text-[16px] font-normal leading-[22px]">
           <ClockIcon />
           <span>Available for Services</span>
-          <span className={`px-2 py-0.5 rounded-full font-[family-name:var(--font-opensans)] text-[12px] font-normal leading-[17px] ${
-            item.status === 'Open'
-              ? 'text-[#05DF72] bg-[#05DF72]/10 border border-[#05DF72]/30'
-              : 'text-red-400 bg-red-400/10 border border-red-400/30'
-          }`}>
+          <span
+            className={`px-2 py-0.5 rounded-full font-[family-name:var(--font-opensans)] text-[12px] font-normal leading-[17px] ${
+              item.status === 'Open'
+                ? 'text-[#05DF72] bg-[#05DF72]/10 border border-[#05DF72]/30'
+                : 'text-red-400 bg-red-400/10 border border-red-400/30'
+            }`}
+          >
             {item.status === 'Open' ? 'Open Now' : 'Closed'}
           </span>
         </div>
@@ -392,6 +440,232 @@ function Step1({
   );
 }
 
+/* ── OTP Verification Step ────────────────────────────────── */
+
+interface OtpStepProps {
+  phone: string;
+  onVerify: () => void;
+  onBack: () => void;
+}
+
+function OtpStep({ phone, onVerify, onBack }: OtpStepProps) {
+  const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
+  const [timer, setTimer] = useState(5 * 60);
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  useEffect(() => {
+    if (timer <= 0) return;
+    const interval = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [timer]);
+
+  const formatTimer = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  };
+
+  const handleChange = useCallback(
+    (index: number, value: string) => {
+      if (!/^\d*$/.test(value)) return;
+      const newOtp = [...otp];
+      newOtp[index] = value.slice(-1);
+      setOtp(newOtp);
+      if (value && index < 5) {
+        otpRefs.current[index + 1]?.focus();
+      }
+    },
+    [otp]
+  );
+
+  const handleKeyDown = useCallback(
+    (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Backspace' && !otp[index] && index > 0) {
+        otpRefs.current[index - 1]?.focus();
+      }
+    },
+    [otp]
+  );
+
+  const handlePaste = useCallback((e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData
+      .getData('text')
+      .replace(/\D/g, '')
+      .slice(0, 6);
+    const newOtp = Array(6).fill('');
+    for (let i = 0; i < pastedData.length; i++) {
+      newOtp[i] = pastedData[i];
+    }
+    setOtp(newOtp);
+    const focusIndex = Math.min(pastedData.length, 5);
+    otpRefs.current[focusIndex]?.focus();
+  }, []);
+
+  const handleResend = () => {
+    setTimer(5 * 60);
+    setOtp(Array(6).fill(''));
+    otpRefs.current[0]?.focus();
+  };
+
+  const isComplete = otp.every((digit) => digit !== '');
+
+  return (
+    <div className="flex flex-col gap-5">
+      {/* Back Button */}
+      <button
+        onClick={onBack}
+        className="flex items-center gap-1.5 text-white/60 hover:text-[#F7941D] transition-colors cursor-pointer self-start"
+        style={{
+          fontFamily: '"Open Sans", sans-serif',
+          fontSize: '14px',
+          fontWeight: 400,
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+        >
+          <path
+            d="M15.8334 10H4.16669"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M10 15.8334L4.16669 10L10 4.16669"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        Back
+      </button>
+
+      {/* Header */}
+      <div className="flex flex-col gap-2">
+        <h2
+          style={{
+            color: '#FFF',
+            fontFamily: '"Gabarito", sans-serif',
+            fontSize: '24px',
+            fontStyle: 'normal',
+            fontWeight: 500,
+            lineHeight: 'normal',
+          }}
+        >
+          Verify your Number
+        </h2>
+        <p
+          style={{
+            color: 'rgba(255, 255, 255, 0.60)',
+            fontFamily: '"Open Sans", sans-serif',
+            fontSize: '16px',
+            fontStyle: 'normal',
+            fontWeight: 400,
+            lineHeight: 'normal',
+          }}
+        >
+          We sent a 6-digit code to{' '}
+          <span style={{ color: '#F7941D' }}>+880 {phone}</span>
+        </p>
+      </div>
+
+      {/* OTP Input Boxes */}
+      <div className="flex gap-3 justify-center" onPaste={handlePaste}>
+        {otp.map((digit, idx) => (
+          <input
+            key={idx}
+            ref={(el) => {
+              otpRefs.current[idx] = el;
+            }}
+            type="text"
+            inputMode="numeric"
+            maxLength={1}
+            value={digit}
+            onChange={(e) => handleChange(idx, e.target.value)}
+            onKeyDown={(e) => handleKeyDown(idx, e)}
+            className="text-center text-white focus:outline-none focus:border-[#F7941D] transition-colors"
+            style={{
+              width: '48px',
+              height: '52px',
+              borderRadius: '14px',
+              border: digit
+                ? '1px solid #F7941D'
+                : '1px solid rgba(255, 255, 255, 0.25)',
+              background: '#1D1D1F',
+              fontFamily: '"Open Sans", sans-serif',
+              fontSize: '20px',
+              fontWeight: 600,
+              lineHeight: '28px',
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Timer & Resend */}
+      <div className="flex items-center justify-between">
+        <p
+          style={{
+            color: 'rgba(255, 255, 255, 0.50)',
+            fontFamily: '"Open Sans", sans-serif',
+            fontSize: '14px',
+            fontWeight: 400,
+          }}
+        >
+          Time remaining:{' '}
+          <span
+            style={{
+              color: timer > 60 ? '#F7941D' : '#EF4444',
+              fontWeight: 600,
+            }}
+          >
+            {formatTimer(timer)}
+          </span>
+        </p>
+        <button
+          onClick={handleResend}
+          disabled={timer > 0}
+          className="transition-colors cursor-pointer disabled:cursor-not-allowed"
+          style={{
+            color: timer > 0 ? 'rgba(255, 255, 255, 0.25)' : '#F7941D',
+            fontFamily: '"Open Sans", sans-serif',
+            fontSize: '14px',
+            fontWeight: 600,
+            background: 'transparent',
+            border: 'none',
+          }}
+        >
+          Resend OTP
+        </button>
+      </div>
+
+      {/* Verify Button */}
+      <button
+        onClick={onVerify}
+        disabled={!isComplete}
+        className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-[18px] bg-[#F7941D] text-[#1D1D1F] cursor-pointer transition-all duration-300 hover:bg-[#d87c12] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#F7941D]"
+        style={{
+          fontFamily: '"Open Sans", sans-serif',
+          fontSize: '14px',
+          fontWeight: 600,
+          lineHeight: '20px',
+        }}
+      >
+        Verify
+        <ArrowRightIcon />
+      </button>
+    </div>
+  );
+}
+
 /* ── Step 2: Contact Info ────────────────────────────────── */
 
 interface Step2Props {
@@ -530,22 +804,57 @@ function Step2Adoption({ onShowDonor }: Step2AdoptionProps) {
   return (
     <div className="flex flex-col gap-4 w-full max-w-[500px] mx-auto items-center text-center">
       <div className="flex flex-col">
-        <p style={{ color: '#F7941D', fontFamily: '"Gabarito", sans-serif', fontSize: '24px', fontWeight: 600 }}>
+        <p
+          style={{
+            color: '#F7941D',
+            fontFamily: '"Gabarito", sans-serif',
+            fontSize: '24px',
+            fontWeight: 600,
+          }}
+        >
           Thank you!
         </p>
-        <h2 style={{ color: '#FFF', fontFamily: '"Gabarito", sans-serif', fontSize: '24px', fontWeight: 500 }}>
-          Contact Donor from the<br />information below.
+        <h2
+          style={{
+            color: '#FFF',
+            fontFamily: '"Gabarito", sans-serif',
+            fontSize: '24px',
+            fontWeight: 500,
+          }}
+        >
+          Contact Donor from the
+          <br />
+          information below.
         </h2>
       </div>
 
       <div className="w-full flex flex-col gap-3 p-4 rounded-xl border border-dashed border-[#BE1E2D] bg-[#BE1E2D]/10 text-left">
-        <span style={{ color: '#FFF', fontFamily: '"Gabarito", sans-serif', fontSize: '18px', fontWeight: 500 }}>
+        <span
+          style={{
+            color: '#FFF',
+            fontFamily: '"Gabarito", sans-serif',
+            fontSize: '18px',
+            fontWeight: 500,
+          }}
+        >
           Donor Information
         </span>
         <div className="flex items-start gap-3">
-          <div className="shrink-0 mt-0.5"><InfoRedIcon /></div>
-          <p style={{ color: 'rgba(255, 227, 229, 0.8)', fontFamily: '"Open Sans", sans-serif', fontSize: '15px', fontWeight: 300, lineHeight: '20px' }}>
-            This is a free platform connecting adopters with donors. Please meet in safe, public places and verify all information before proceeding with adoption.
+          <div className="shrink-0 mt-0.5">
+            <InfoRedIcon />
+          </div>
+          <p
+            style={{
+              color: 'rgba(255, 227, 229, 0.8)',
+              fontFamily: '"Open Sans", sans-serif',
+              fontSize: '15px',
+              fontWeight: 300,
+              lineHeight: '20px',
+            }}
+          >
+            This is a free platform connecting adopters with donors. Please meet
+            in safe, public places and verify all information before proceeding
+            with adoption.
           </p>
         </div>
       </div>
@@ -553,7 +862,11 @@ function Step2Adoption({ onShowDonor }: Step2AdoptionProps) {
       <button
         onClick={onShowDonor}
         className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-[18px] bg-transparent text-white border border-white/25 cursor-pointer transition-colors duration-300 hover:border-white/50 active:scale-[0.98]"
-        style={{ fontFamily: '"Open Sans", sans-serif', fontSize: '14px', fontWeight: 600 }}
+        style={{
+          fontFamily: '"Open Sans", sans-serif',
+          fontSize: '14px',
+          fontWeight: 600,
+        }}
       >
         Show Donor Information
         <EyeIcon />
@@ -571,38 +884,99 @@ interface Step3AdoptionProps {
 function Step3Adoption({ item }: Step3AdoptionProps) {
   const phoneNumber = item.phone_number || '+8801966-440001';
   // Use a sensible default name if it's formatted weirdly or missing
-  const donorName = item.name.includes('The ') ? 'Sara Rahman' : (item.name || 'Sara Rahman');
+  const donorName = item.name.includes('The ')
+    ? 'Sara Rahman'
+    : item.name || 'Sara Rahman';
 
   return (
     <div className="flex flex-col gap-6 w-full max-w-[500px] mx-auto items-center text-center">
-      <h2 style={{ color: '#F7941D', fontFamily: '"Gabarito", sans-serif', fontSize: '24px', fontWeight: 600 }}>
+      <h2
+        style={{
+          color: '#F7941D',
+          fontFamily: '"Gabarito", sans-serif',
+          fontSize: '24px',
+          fontWeight: 600,
+        }}
+      >
         Donor Information
       </h2>
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap">
-          <span style={{ color: '#F7941D', fontFamily: '"Open Sans", sans-serif', fontSize: '14px', fontWeight: 600 }}>Donor Name</span>
-          <span style={{ color: '#FFF', fontFamily: '"Open Sans", sans-serif', fontSize: '24px', fontWeight: 500 }}>{donorName}</span>
+          <span
+            style={{
+              color: '#F7941D',
+              fontFamily: '"Open Sans", sans-serif',
+              fontSize: '14px',
+              fontWeight: 600,
+            }}
+          >
+            Donor Name
+          </span>
+          <span
+            style={{
+              color: '#FFF',
+              fontFamily: '"Open Sans", sans-serif',
+              fontSize: '24px',
+              fontWeight: 500,
+            }}
+          >
+            {donorName}
+          </span>
         </div>
         <div className="flex flex-col items-center">
-          <span style={{ color: '#F7941D', fontFamily: '"Open Sans", sans-serif', fontSize: '14px', fontWeight: 600 }}>Contact</span>
+          <span
+            style={{
+              color: '#F7941D',
+              fontFamily: '"Open Sans", sans-serif',
+              fontSize: '14px',
+              fontWeight: 600,
+            }}
+          >
+            Contact
+          </span>
           <div className="flex items-center gap-2">
             <PhoneCallOutlineIcon />
-            <span style={{ color: '#FFF', fontFamily: '"Open Sans", sans-serif', fontSize: '24px', fontWeight: 500 }}>{phoneNumber}</span>
+            <span
+              style={{
+                color: '#FFF',
+                fontFamily: '"Open Sans", sans-serif',
+                fontSize: '24px',
+                fontWeight: 500,
+              }}
+            >
+              {phoneNumber}
+            </span>
           </div>
         </div>
       </div>
 
-      <div className="w-full p-5 rounded-xl border border-dashed border-[#F7941D] text-left" style={{ backgroundColor: 'rgba(247, 148, 29, 0.11)' }}>
-        <p style={{ color: 'rgba(255, 255, 255, 0.80)', fontFamily: '"Open Sans", sans-serif', fontSize: '14px', lineHeight: '20px' }}>
-          <strong style={{ color: '#F7941D' }}>Important:</strong> Always verify the pet's health records, meet in a safe public location, and take your time to ensure this is the right match for you and the pet.
+      <div
+        className="w-full p-5 rounded-xl border border-dashed border-[#F7941D] text-left"
+        style={{ backgroundColor: 'rgba(247, 148, 29, 0.11)' }}
+      >
+        <p
+          style={{
+            color: 'rgba(255, 255, 255, 0.80)',
+            fontFamily: '"Open Sans", sans-serif',
+            fontSize: '14px',
+            lineHeight: '20px',
+          }}
+        >
+          <strong style={{ color: '#F7941D' }}>Important:</strong> Always verify
+          the pet's health records, meet in a safe public location, and take
+          your time to ensure this is the right match for you and the pet.
         </p>
       </div>
 
       <div className="w-full flex gap-4">
         <button
           className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-[18px] bg-[#F7941D] text-[#1D1D1F] cursor-pointer transition-colors duration-300 hover:bg-[#d87c12] active:scale-[0.98]"
-          style={{ fontFamily: '"Open Sans", sans-serif', fontSize: '14px', fontWeight: 600 }}
+          style={{
+            fontFamily: '"Open Sans", sans-serif',
+            fontSize: '14px',
+            fontWeight: 600,
+          }}
           onClick={() => window.open(`tel:${phoneNumber}`)}
         >
           <PhoneCallOutlineIcon />
@@ -610,8 +984,14 @@ function Step3Adoption({ item }: Step3AdoptionProps) {
         </button>
         <button
           className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-[18px] bg-[#128C7E] text-white cursor-pointer transition-colors duration-300 hover:bg-[#0e7a6d] active:scale-[0.98]"
-          style={{ fontFamily: '"Open Sans", sans-serif', fontSize: '14px', fontWeight: 600 }}
-          onClick={() => window.open(`https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}`)}
+          style={{
+            fontFamily: '"Open Sans", sans-serif',
+            fontSize: '14px',
+            fontWeight: 600,
+          }}
+          onClick={() =>
+            window.open(`https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}`)
+          }
         >
           <WhatsappIcon />
           Whatsapp
@@ -675,7 +1055,7 @@ export default function BookingModal({
   hideCard = false,
   variant = 'default',
 }: BookingModalProps) {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [step, setStep] = useState<1 | 'otp' | 2 | 3>(1);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
 
@@ -707,11 +1087,24 @@ export default function BookingModal({
   }, [isOpen]);
 
   const handleNext = useCallback(() => {
+    setStep('otp');
+    setAnimState('idle');
+    setTimeout(() => {
+      setAnimState('entering');
+    }, 50);
+  }, []);
+
+  const handleOtpVerify = useCallback(() => {
     setStep(2);
     setAnimState('idle');
     setTimeout(() => {
       setAnimState('entering');
     }, 50);
+  }, []);
+
+  const handleOtpBack = useCallback(() => {
+    setStep(1);
+    setAnimState('idle');
   }, []);
 
   const handleShowDonor = useCallback(() => {
@@ -730,11 +1123,10 @@ export default function BookingModal({
 
   if (!isOpen) return null;
 
-  const step2Active = step === 2;
-  const step3Active = step === 3;
-  const slidingStepActive = step2Active || step3Active;
-  const slidingStepVisible =
-    slidingStepActive && (animState === 'entering' || animState === 'done');
+  const isStep1Visible = step === 1 || (step === 'otp' && animState === 'idle');
+  const otpSlidingIn = step === 'otp';
+  const otpBlurringOut = step === 2 || step === 3;
+  const isOtpVisible = otpSlidingIn || (otpBlurringOut && animState === 'idle');
 
   const modalContent = (rightSide: React.ReactNode) => (
     <div className="flex flex-col flex-1 justify-center items-center w-full py-8">
@@ -764,7 +1156,7 @@ export default function BookingModal({
       className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 md:p-8 animate-in fade-in duration-200"
       onClick={onClose}
     >
-      {/* ── Step 1 Modal ── blurs & fades when step2 enters */}
+      {/* ── Layer 0: Step 1 Modal ── blurs & fades when OTP enters */}
       <ModalShell
         onClose={onClose}
         onClick={(e) => e.stopPropagation()}
@@ -773,10 +1165,12 @@ export default function BookingModal({
         style={{
           transition:
             'opacity 0.45s ease, filter 0.45s ease, transform 0.45s ease',
-          opacity: slidingStepVisible ? 0 : 1,
-          filter: slidingStepVisible ? 'blur(10px)' : 'blur(0px)',
-          transform: slidingStepVisible ? 'scale(0.96)' : 'scale(1)',
-          ...(animState === 'done' ? { display: 'none' as const } : {}),
+          opacity: isStep1Visible ? 1 : 0,
+          filter: isStep1Visible ? 'blur(0px)' : 'blur(10px)',
+          transform: isStep1Visible ? 'scale(1)' : 'scale(0.96)',
+          ...((step === 'otp' && animState === 'done') || step === 2 || step === 3
+            ? { display: 'none' as const }
+            : {}),
         }}
       >
         {modalContent(
@@ -791,8 +1185,49 @@ export default function BookingModal({
         )}
       </ModalShell>
 
-      {/* ── Sliding Modal ── slides in from the right */}
-      {slidingStepActive && (
+      {/* ── Layer 1: OTP Modal ── slides in, then blurs & fades when Step 2 enters */}
+      {(otpSlidingIn || otpBlurringOut) && (
+        <ModalShell
+          onClose={onClose}
+          onClick={(e) => e.stopPropagation()}
+          onTransitionEnd={handleTransitionEnd}
+          hideCard={hideCard}
+          style={{
+            position: 'absolute',
+            ...(otpSlidingIn
+              ? {
+                  transition:
+                    animState === 'idle'
+                      ? 'none'
+                      : 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  opacity: animState === 'idle' ? 0 : 1,
+                  transform:
+                    animState === 'idle' ? 'translateX(80px)' : 'translateX(0)',
+                }
+              : {
+                  transition:
+                    'opacity 0.45s ease, filter 0.45s ease, transform 0.45s ease',
+                  opacity: isOtpVisible ? 1 : 0,
+                  filter: isOtpVisible ? 'blur(0px)' : 'blur(10px)',
+                  transform: isOtpVisible ? 'scale(1)' : 'scale(0.96)',
+                  ...((step === 2 && animState === 'done') || step === 3
+                    ? { display: 'none' as const }
+                    : {}),
+                }),
+          }}
+        >
+          {modalContent(
+            <OtpStep
+              phone={phone}
+              onVerify={handleOtpVerify}
+              onBack={handleOtpBack}
+            />
+          )}
+        </ModalShell>
+      )}
+
+      {/* ── Layer 2: Step 2 & 3 Modal ── slides in from the right */}
+      {(step === 2 || step === 3) && (
         <ModalShell
           onClose={onClose}
           onClick={(e) => e.stopPropagation()}
@@ -801,7 +1236,9 @@ export default function BookingModal({
           style={{
             position: 'absolute',
             transition:
-              'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+              animState === 'idle'
+                ? 'none'
+                : 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
             opacity: animState === 'idle' ? 0 : 1,
             transform:
               animState === 'idle' ? 'translateX(80px)' : 'translateX(0)',

@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/sections/Navbar";
 import Footer from "@/sections/Footer";
 import { cn } from "@/lib/utils";
+import { CartProvider } from "@/lib/cartContext";
 
 const gabarito = Gabarito({
   subsets: ["latin"],
@@ -46,9 +47,11 @@ export default function RootLayout({
       suppressHydrationWarning 
     >
       <body className="font-sans antialiased" suppressHydrationWarning>
-        <Navbar />
-        {children}
-        <Footer />
+        <CartProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );

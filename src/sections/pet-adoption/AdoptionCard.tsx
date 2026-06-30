@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -17,8 +17,8 @@ export interface AdoptionData {
   health: string;
 }
 
-const HeartIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+const HeartIcon = ({ filled }: { filled?: boolean }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={filled ? "#F7941D" : "none"}>
     <path d="M20.8401 4.60999C20.3294 4.099 19.7229 3.69364 19.0555 3.41708C18.388 3.14052 17.6726 2.99817 16.9501 2.99817C16.2276 2.99817 15.5122 3.14052 14.8448 3.41708C14.1773 3.69364 13.5709 4.099 13.0601 4.60999L12.0001 5.66999L10.9401 4.60999C9.90843 3.5783 8.50915 2.9987 7.05012 2.9987C5.59109 2.9987 4.19181 3.5783 3.16012 4.60999C2.12843 5.64169 1.54883 7.04096 1.54883 8.49999C1.54883 9.95903 2.12843 11.3583 3.16012 12.39L4.22012 13.45L12.0001 21.23L19.7801 13.45L20.8401 12.39C21.3511 11.8792 21.7565 11.2728 22.033 10.6053C22.3096 9.93789 22.4519 9.22248 22.4519 8.49999C22.4519 7.77751 22.3096 7.0621 22.033 6.39464C21.7565 5.72718 21.3511 5.12075 20.8401 4.60999V4.60999Z" stroke="#F7941D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
@@ -50,10 +50,15 @@ const PhoneIcon = () => (
 );
 
 export default function AdoptionCard({ item, onContactDonor }: { item: AdoptionData; onContactDonor?: (item: AdoptionData) => void }) {
+  const [isLoved, setIsLoved] = useState(false);
+
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-[#1A1A1D] border border-[#2a2a2d] transition-all duration-300 hover:border-[#F7941D]/40 hover:shadow-[0_0_30px_rgba(247,148,29,0.08)]">
+      {/* Invisible full-card link */}
+      <Link href={`/pet-adoption/${item.id}`} className="absolute inset-0 z-[1]" aria-label={`View details for ${item.name}`} />
+
       {/* Image */}
-      <Link href={`/pet-adoption/${item.id}`} className="relative w-full h-[220px] overflow-hidden block">
+      <div className="relative w-full h-[220px] overflow-hidden block">
         <Image
           src={item.image}
           alt={item.name}
@@ -61,17 +66,24 @@ export default function AdoptionCard({ item, onContactDonor }: { item: AdoptionD
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
-      </Link>
+      </div>
 
       <div className="flex flex-col flex-1 p-5">
         <div className="flex justify-between items-start mb-1">
-          <Link href={`/pet-adoption/${item.id}`}>
+          <Link href={`/pet-adoption/${item.id}`} className="relative z-10">
             <h3 className="text-[#FFF0DE] font-[Gabarito] text-[24px] font-[500] leading-[30px] not-italic hover:text-[#F7941D] transition-colors">
               {item.name}
             </h3>
           </Link>
-          <button className="text-orange-400 hover:scale-110 transition-transform">
-            <HeartIcon />
+          <button 
+            className="relative z-10 text-orange-400 hover:scale-110 transition-transform active:scale-95 cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsLoved(!isLoved);
+            }}
+          >
+            <HeartIcon filled={isLoved} />
           </button>
         </div>
         
@@ -155,7 +167,7 @@ export default function AdoptionCard({ item, onContactDonor }: { item: AdoptionD
         </p>
 
         <button 
-          className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-[12px] bg-[#F7941D] text-[#1D1D1F] transition-colors duration-300 hover:bg-[#d87c12] active:scale-[0.98] cursor-pointer"
+          className="relative z-10 w-full flex items-center justify-center gap-2 px-6 py-3 rounded-[12px] bg-[#F7941D] text-[#1D1D1F] transition-colors duration-300 hover:bg-[#d87c12] active:scale-[0.98] cursor-pointer"
           style={{
             fontFamily: '"Open Sans", sans-serif',
             fontSize: '14px',
@@ -163,7 +175,11 @@ export default function AdoptionCard({ item, onContactDonor }: { item: AdoptionD
             fontWeight: 600,
             lineHeight: '20px'
           }}
-          onClick={() => onContactDonor?.(item)}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onContactDonor?.(item);
+          }}
         >
           <PhoneIcon />
           Contact Donor

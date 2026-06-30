@@ -55,7 +55,7 @@ const cards = [
 
 export default function Service() {
   return (
-    <section className="bg-[#111111] py-47">
+    <section id="services" className="bg-[#111111] py-24 md:py-40">
       <h1 className="text-center text-6xl font-bold text-white mb-16">
         OUR SERVICES
       </h1>

@@ -7,6 +7,14 @@ import review1 from '@/assets/images/Review1.png';
 import review2 from '@/assets/images/Review2.png';
 import review3 from '@/assets/images/Review3.png';
 
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
+
 /* ─── Review Data ─── */
 interface Review {
   id: number;
@@ -41,6 +49,22 @@ const reviews: Review[] = [
     review:
       "PetGo changed how I care for my dog. I can track him when he's out, book vet appointments with a tap, and even connect with other pet lovers. It's not just an app—it's peace of mind. I finally feel like I have the support I need as a pet parent.",
   },
+  {
+    id: 4,
+    name: 'FEROZA AKTER',
+    subtitle: 'Has a Talking Parrot',
+    image: review3,
+    review:
+      "PetGo changed how I care for my dog. I can track him when he's out, book vet appointments with a tap, and even connect with other pet lovers. It's not just an app—it's peace of mind. I finally feel like I have the support I need as a pet parent.",
+  },
+  {
+    id: 5,
+    name: 'FEROZA AKTER',
+    subtitle: 'Has a Talking Parrot',
+    image: review3,
+    review:
+      "PetGo changed how I care for my dog. I can track him when he's out, book vet appointments with a tap, and even connect with other pet lovers. It's not just an app—it's peace of mind. I finally feel like I have the support I need as a pet parent.",
+  },
 ];
 
 /* ─── Quote Mark SVG ─── */
@@ -67,7 +91,7 @@ function ReviewCard({ review }: { review: Review }) {
 
   return (
     <div
-      className="relative w-[420px] h-[400px] rounded-[20px] overflow-hidden cursor-pointer shrink-0 select-none group"
+      className="relative w-[300px] sm:w-[420px] h-[400px] rounded-[20px] overflow-hidden cursor-pointer shrink-0 select-none group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -86,7 +110,7 @@ function ReviewCard({ review }: { review: Review }) {
         className={`absolute shadow-lg transition-all duration-300 ease-in-out z-10
           ${
             isHovered
-              ? 'w-[420px] h-[400px] left-0 bottom-0 rounded-[20px] bg-white'
+              ? 'w-full h-full left-0 bottom-0 rounded-[20px] bg-white'
               : 'w-[60px] h-[60px] left-5 bottom-4 rounded-xl bg-[#BE1E2D]'
           }
         `}
@@ -175,7 +199,7 @@ function LargeCloseQuote({ className }: { className?: string }) {
 export default function Reviews() {
   return (
     <section className="bg-black py-16 md:py-24 overflow-hidden">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-16">
+      <div className="px-4 md:px-20 max-w-[1350px] mx-auto">
         {/* ── Heading ── */}
         <div className="text-center mb-4 relative flex justify-center items-center">
           {/* Decorative open quote */}
@@ -201,13 +225,31 @@ export default function Reviews() {
         </p>
 
         {/* ── Scrollable Review Cards ── */}
-        <div className="flex gap-6 md:gap-8 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide justify-center">
-          {reviews.map((review) => (
-            <div key={review.id} className="snap-center">
-              <ReviewCard review={review} />
-            </div>
-          ))}
-        </div>
+        <Carousel
+          opts={{
+            align: 'start',
+            loop: false,
+            dragFree: true,
+          }}
+          className="w-full select-none"
+        >
+          <CarouselContent className="-ml-8">
+            {reviews.map((review) => (
+              <CarouselItem key={review.id} className="pl-8 basis-auto">
+                <ReviewCard review={review} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          {/* <CarouselPrevious className="hidden md:flex z-50 cursor-pointer active:scale-95 active:not-aria-[haspopup]:-translate-y-1/2 text-white border-white/20 bg-white/10 hover:bg-white/20 hover:text-white disabled:opacity-50 -left-16 h-14 w-14 [&_svg]:size-8" /> */}
+          {/* <CarouselNext className="hidden md:flex z-50 cursor-pointer active:scale-95 active:not-aria-[haspopup]:-translate-y-1/2 text-white border-white/20 bg-white/10 hover:bg-[#BE1E2D] hover:border-[#BE1E2D] hover:text-white disabled:opacity-50 -right-16 h-14 w-14 [&_svg]:size-8" /> */}
+
+          {/* Mobile buttons */}
+          {/* <div className="flex md:hidden items-center justify-center gap-6 mt-8">
+            <CarouselPrevious className="static translate-y-0 z-50 cursor-pointer active:scale-95 active:not-aria-[haspopup]:translate-y-0 text-white border-white/20 bg-white/10 hover:bg-white/20 hover:text-white disabled:opacity-50 h-14 w-14 [&_svg]:size-8" />
+            <CarouselNext className="static translate-y-0 z-50 cursor-pointer active:scale-95 active:not-aria-[haspopup]:translate-y-0 text-white border-white/20 bg-white/10 hover:bg-[#BE1E2D] hover:border-[#BE1E2D] hover:text-white disabled:opacity-50 h-14 w-14 [&_svg]:size-8" />
+          </div> */}
+        </Carousel>
       </div>
     </section>
   );

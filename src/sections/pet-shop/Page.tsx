@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion, Variants } from 'framer-motion';
 
 import AddToCart from '@/components/ecommerce/addToCart';
+import { useCart } from '@/lib/cartContext';
 
 import ecommerce1 from '@/assets/images/ecoomerce1.png';
 import ecommerce2 from '@/assets/images/ecoomerce2.png';
@@ -161,6 +162,7 @@ export default function PetShopPage() {
   const [sortBy, setSortBy] = useState('Default');
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
+  const { addItem } = useCart();
 
   /* ── Filtering & Sorting ─────────────────────────────────── */
 
@@ -329,7 +331,7 @@ export default function PetShopPage() {
                       onClick={() => setSelectedCategory(category)}
                       className={`text-left px-4 py-2 rounded-lg text-sm transition-all duration-200 cursor-pointer ${
                         selectedCategory === category
-                          ? 'bg-[#F7941D] text-[#1D1D1F] font-bold'
+                          ? 'bg-[#F7941D] text-white'
                           : 'text-gray-300 hover:bg-white/5 hover:text-white'
                       }`}
                     >
@@ -351,7 +353,7 @@ export default function PetShopPage() {
                       onClick={() => setSelectedAnimalType(type)}
                       className={`text-left px-4 py-2 rounded-lg text-sm transition-all duration-200 cursor-pointer ${
                         selectedAnimalType === type
-                          ? 'bg-[#F7941D] text-[#1D1D1F] font-bold'
+                          ? 'bg-[#F7941D] text-white'
                           : 'text-gray-300 hover:bg-white/5 hover:text-white'
                       }`}
                     >
@@ -469,6 +471,17 @@ export default function PetShopPage() {
                           e.stopPropagation();
                           toggleFavorite(product.id);
                         }}
+                        onAddToCart={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          addItem({
+                            id: product.id,
+                            name: product.name,
+                            category: product.category,
+                            price: product.price,
+                            image: product.image,
+                          });
+                        }}
                       />
                     </Link>
                   </motion.div>
@@ -488,12 +501,14 @@ interface ProductCardProps {
   product: Product;
   isFavorite: boolean;
   onToggleFavorite: (e: React.MouseEvent) => void;
+  onAddToCart: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 function ProductCard({
   product,
   isFavorite,
   onToggleFavorite,
+  onAddToCart,
 }: ProductCardProps) {
   return (
     <div className="group relative flex flex-col h-[600px] overflow-hidden rounded-2xl bg-[#1A1A1D] border border-[#2a2a2d] transition-all duration-300 hover:border-[#BE1E2D]/60 hover:shadow-[0_0_40px_rgba(190,30,45,0.20)]">
@@ -529,9 +544,7 @@ function ProductCard({
           productId={product.id}
           isFavorite={isFavorite}
           onToggleFavorite={onToggleFavorite}
-          onAddToCart={() => {
-            console.log(`Product ${product.id} added to cart`);
-          }}
+          onAddToCart={onAddToCart}
         />
       </div>
     </div>

@@ -237,10 +237,10 @@ export default function CommunityLayout({ children }: CommunityLayoutProps) {
       <aside className="w-full sm:w-[80px] lg:w-[260px] ml-1 sm:min-w-[80px] lg:min-w-[260px] h-auto sm:h-screen flex flex-row sm:flex-col pt-2.5 sm:pt-4 px-4 sm:px-2 lg:px-3 pb-2.5 sm:pb-6 border-t sm:border-t-0 border-white/10 bg-[#101010] order-2 sm:order-1 fixed sm:static bottom-0 left-0 right-0 z-[100] sm:z-auto overflow-y-visible sm:overflow-y-auto scrollbar-hide">
         {/* Logo */}
         <div className="hidden sm:flex lg:pb-2.5 justify-center lg:justify-start">
-          <Link
-            href="/community"
+          <a
+            href="/"
             className="inline-flex items-center hover:opacity-75 transition-opacity"
-            aria-label="PetGo Community Home"
+            aria-label="PetGo Home"
           >
             <Image
               src={PetGoLogo}
@@ -251,7 +251,7 @@ export default function CommunityLayout({ children }: CommunityLayoutProps) {
               priority
             />
             <span className="text-2xl lg:hidden">🐾</span>
-          </Link>
+          </a>
         </div>
 
         {/* Navigation */}
